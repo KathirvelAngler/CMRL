@@ -14,6 +14,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Created by Mathan on 08-07-2019.
+ */
+
 public class CMRLPrefs {
 	private static final String DEFAULT_SUFFIX = "_aqprefs";
 	private static final String LENGTH = "#LENGTH";
