@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="switch_tabs">
+        <item>@string/drop_metro</item>
+        <item>@string/drop_home</item>
+    </string-array>
+
+    <string-array name="trip_details_icon">
+        <item>@drawable/ic_metro_icon</item>
+        <item>@drawable/ic_metro_icon</item>
+        <item>@drawable/ic_metro_icon</item>
+        <item>@drawable/ic_metro_icon</item>
+        <item>@drawable/ic_metro_icon</item>
+    </string-array>
+
+</resources>

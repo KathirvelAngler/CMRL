@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_light_gray"
+    android:orientation="vertical"
+    tools:context=".activity.book.BookCabActivity">
+
+    <include layout="@layout/app_header" />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        app:cardElevation="10dp">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/SubTitleSmall"
+                    android:layout_width="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="15 Jul, 2019"
+                    android:textColor="@color/app_blue"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/header_app_icon"
+                        style="@style/HeaderAppIcon"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:tint="@color/app_blue" />
+
+                    <TextView
+                        style="@style/SubTitleSmall"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="TN 65 AB 2306"
+                        android:textColor="@color/app_gray"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical"
+                        android:padding="15dp">
+
+                        <TextView
+                            style="@style/SubTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@mipmap/ic_seat"
+                            android:drawablePadding="5dp"
+                            android:gravity="end"
+                            android:padding="0dp"
+                            android:text="4"
+                            android:textColor="@color/app_blue"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            style="@style/SubTitleSmall"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:padding="0dp"
+                            android:text="@string/available_seats"
+                            android:textColor="@color/app_blue" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_map_static" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@color/app_light_gray"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@mipmap/ic_circle_solid"
+                        android:tint="@color/app_green" />
+
+                    <TextView
+                        style="@style/SubTitleSmall"
+                        android:layout_width="0dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="Koyambedu Metro Station"
+                        android:textColor="@color/app_light_blue"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        style="@style/SubTitleSmall"
+                        android:layout_width="0dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|end"
+                        android:text="Rail Nagar"
+                        android:textColor="@color/app_light_blue"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@mipmap/ic_circle_solid"
+                        android:tint="@color/app_red" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/SubTitleSmall"
+                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="@string/available_seats"
+                        android:textColor="@color/app_blue" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:background="@drawable/bg_border_gray_filled" />
+
+                        <TextView
+                            style="@style/SubTitleSmall"
+                            android:layout_width="wrap_content"
+                            android:gravity="center_vertical"
+                            android:text="@string/booked"
+                            android:textColor="@color/app_red"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:background="@drawable/bg_border_gray" />
+
+                        <TextView
+                            style="@style/SubTitleSmall"
+                            android:layout_width="wrap_content"
+                            android:gravity="center_vertical"
+                            android:text="@string/available"
+                            android:textColor="@color/app_green"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/seat_selection_recycler"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp" />
+
+                    <LinearLayout
+                        android:id="@+id/seat_selection_fare_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="5dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            style="@style/SubTitle"
+                            android:layout_width="match_parent"
+                            android:gravity="center"
+                            android:text="@string/fare"
+                            android:textColor="@color/app_blue"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/seat_selection_fare"
+                            style="@style/SubTitle"
+                            android:layout_width="match_parent"
+                            android:gravity="center"
+                            android:textColor="@color/app_orange"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/activity_seat_book"
+                    style="@style/SubmitButton"
+                    android:background="@drawable/button_selector"
+                    android:enabled="false"
+                    android:text="@string/book_now" />
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </android.support.v7.widget.CardView>
+
+
+</LinearLayout>

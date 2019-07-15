@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">CMRL Customer</string>
+    <string name="book_cab">Book Cab</string>
+    <string name="your_rides">Your Rides</string>
+    <string name="trip_details">Trip Details</string>
+    <string name="book_confirm">Booking Confirmation</string>
+    <string name="drop_home">Drop me at Home</string>
+    <string name="drop_metro">Drop me at Metro</string>
+    <string name="pick_up_location">Pick Up\nLocation</string>
+    <string name="drop_location">Drop\nLocation</string>
+    <string name="search">search</string>
+    <string name="available_seats">Available Seats</string>
+    <string name="book_now">Book Now</string>
+    <string name="fare">Fare :</string>
+    <string name="booked">BOOKED</string>
+    <string name="available">AVAILABLE</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="mail_invoice">Mail Invoice</string>
+    <string name="get_support">Get Support</string>
 </resources>

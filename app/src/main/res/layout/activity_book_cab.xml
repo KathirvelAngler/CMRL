@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_light_gray"
+    android:orientation="vertical"
+    tools:context=".activity.book.BookCabActivity">
+
+    <include layout="@layout/app_header" />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        app:cardElevation="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@color/app_blue">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_metro_icon"
+                    android:tint="@color/app_white" />
+
+            </RelativeLayout>
+
+            <lib.kingja.switchbutton.SwitchMultiButton
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:disableColor="@color/app_blue"
+                app:selectedColor="@color/app_light_blue"
+                app:selectedTab="0"
+                app:strokeWidth="1dp"
+                app:switchTabs="@array/switch_tabs"
+                app:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/SubTitle"
+                    android:text="@string/pick_up_location" />
+
+                <TextView
+                    android:id="@+id/activity_book_pick_location"
+                    style="@style/BlueBorderWithArrow" />
+
+                <ImageView
+                    style="@style/BackButton"
+                    android:layout_marginLeft="5dp"
+                    android:padding="2dp"
+                    android:src="@mipmap/ic_my_location"
+                    android:tint="@color/app_blue" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/SubTitle"
+                    android:text="@string/drop_location" />
+
+                <TextView
+                    android:id="@+id/activity_book_drop_location"
+                    style="@style/BlueBorderWithArrow" />
+
+                <ImageView
+                    style="@style/BackButton"
+                    android:layout_marginLeft="5dp"
+                    android:padding="2dp"
+                    android:visibility="invisible" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/activity_book_search_cab"
+                style="@style/SubmitButton"
+                android:text="@string/search" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+</LinearLayout>

@@ -3,6 +3,7 @@ package com.cmrl.customer.helper;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -28,6 +29,7 @@ import java.util.Locale;
 public class AppDialogs {
 
     private static ProgressDialog progress;
+    private static Dialog custom_dialog;
 
     public static void showProgressDialog(Context context) {
         showProgressDialog(context, "Please wait...");
@@ -315,6 +317,32 @@ public class AppDialogs {
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.setType(aType);
         context.startActivity(Intent.createChooser(sendIntent, "Choose Your Option"));
+    }
+
+    public static void singleSelection(Context context, String title, String[] data,
+                                       int checked, DialogInterface.OnClickListener listener) {
+        final AlertDialog alertDialog;
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
+        builder.setTitle(title);
+        builder.setSingleChoiceItems(data, checked, listener);
+
+        builder.setPositiveButton(context.getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.setNegativeButton(context.getResources().getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        alertDialog = builder.create();
+        alertDialog.setCancelable(false);
+        alertDialog.show();
     }
 
     /**
