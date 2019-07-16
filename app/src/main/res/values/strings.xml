@@ -18,4 +18,8 @@
     <string name="mail_invoice">Mail Invoice</string>
     <string name="get_support">Get Support</string>
     <string name="completed">Completed</string>
+    <string name="confirmed">Booking Confirmed</string>
+    <string name="booking_number">Booking Number</string>
+    <string name="car_number">Car Number</string>
+    <string name="time">Time</string>
 </resources>

@@ -30,7 +30,7 @@ public class TripDetailActivity extends BaseActivity implements View.OnClickList
     ImageView mBack;
     TripAdapter mAdapter;
     ArrayList<TripDetails> mDetails = new ArrayList<>();
-    LinearLayout mInvoice;
+    LinearLayout mInvoice, mSupport;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,7 @@ public class TripDetailActivity extends BaseActivity implements View.OnClickList
         mTripRecycler = findViewById(R.id.activity_trip_recycler);
         mBack = findViewById(R.id.header_app_back);
         mInvoice = findViewById(R.id.activity_trip_invoice);
+        mSupport = findViewById(R.id.activity_trip_support);
 
         clickListener();
 
@@ -98,6 +99,7 @@ public class TripDetailActivity extends BaseActivity implements View.OnClickList
     public boolean clickListener() {
         mBack.setOnClickListener(this);
         mInvoice.setOnClickListener(this);
+        mSupport.setOnClickListener(this);
         return true;
     }
 
@@ -109,6 +111,9 @@ public class TripDetailActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.activity_trip_invoice:
                 startActivity(new Intent(mContext, RideHistoryActivity.class));
+                break;
+            case R.id.activity_trip_support:
+                startActivity(new Intent(mContext, ConfirmationActivity.class));
                 break;
         }
     }
