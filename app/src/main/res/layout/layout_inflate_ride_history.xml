@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/inflate_ride_icon"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_search"
+            android:tint="@color/app_blue" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/inflate_ride_date"
+                style="@style/SubTitleSmall"
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:padding="0dp"
+                android:text="Jan 27, Wed - 11 AM"
+                android:textColor="@color/app_blue"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/SubTitleSmall"
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:padding="0dp"
+                android:text="CRN000147 - 4 Tickets"
+                android:textColor="@color/app_black"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="7.5dp"
+                    android:layout_height="7.5dp"
+                    android:src="@mipmap/ic_circle_solid"
+                    android:tint="@color/app_green" />
+
+                <TextView
+                    style="@style/SubTitleSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="2"
+                    android:padding="0dp"
+                    android:text="Ashok Nagar"
+                    android:textColor="@color/app_gray"
+                    android:textSize="10sp" />
+
+                <ImageView
+                    android:layout_width="7.5dp"
+                    android:layout_height="7.5dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@mipmap/ic_circle_solid"
+                    android:tint="@color/app_red" />
+
+                <TextView
+                    style="@style/SubTitleSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="2"
+                    android:padding="0dp"
+                    android:text="Thousand Lights"
+                    android:textColor="@color/app_gray"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/SubTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="5dp"
+                android:gravity="end"
+                android:padding="0dp"
+                android:text="₹ 40"
+                android:textColor="@color/app_black"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/inflate_ride_status"
+                style="@style/SubTitleSmall"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:padding="0dp"
+                android:text="@string/completed" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/app_gray_mid" />
+
+</LinearLayout>
+

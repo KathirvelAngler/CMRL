@@ -7,7 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import com.cmrl.customer.R;
 import com.cmrl.customer.model.Seat;
@@ -39,26 +40,26 @@ public class BookSeatAdapter extends RecyclerView.Adapter<BookSeatAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         Seat seat = mSeats.get(position);
         holder.mSeat.setEnabled(seat.available != BOOKED);
 
         switch (seat.available) {
             case BOOKED:
-                holder.mSeat.setBackgroundResource(R.drawable.bg_border_gray_filled);
+                holder.mSeat.setChecked(true);
                 break;
             case AVAILABLE:
-                holder.mSeat.setBackgroundResource(R.drawable.bg_border_gray);
+                holder.mSeat.setChecked(false);
                 break;
             case SELECTED:
-                holder.mSeat.setBackgroundResource(R.drawable.bg_border_blue_filled);
+                holder.mSeat.setChecked(true);
                 break;
         }
 
-        holder.mSeat.setOnClickListener(new View.OnClickListener() {
+        holder.mSeat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                mCallback.select(position);
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mCallback.select(position, holder.mSeat.isChecked());
             }
         });
     }
@@ -70,15 +71,16 @@ public class BookSeatAdapter extends RecyclerView.Adapter<BookSeatAdapter.ViewHo
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView mSeat;
+        CheckBox mSeat;
 
         ViewHolder(View aView) {
             super(aView);
+            this.setIsRecyclable(false);
             mSeat = aView.findViewById(R.id.inflate_book_seat);
         }
     }
 
     public interface Callback {
-        void select(int aPosition);
+        void select(int aPosition, boolean isChecked);
     }
 }

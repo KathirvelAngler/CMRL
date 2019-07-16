@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cmrl.customer.R;
 import com.cmrl.customer.activity.book.adapter.BookSeatAdapter;
@@ -105,11 +106,11 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
     }
 
     @Override
-    public void select(int aPosition) {
-        mSeat.get(aPosition).available = (mSeat.get(aPosition).available == SELECTED ? AVAILABLE : SELECTED);
-        mAdapter.notifyDataSetChanged();
+    public void select(int aPosition, boolean isChecked) {
+        mSeat.get(aPosition).available = isChecked ? SELECTED : AVAILABLE;
+//        mAdapter.notifyDataSetChanged();
 
-        initTotal(mSeat.get(aPosition).available == SELECTED);
+        initTotal(isChecked);
     }
 
     private void initTotal(boolean isAdd) {
@@ -131,11 +132,21 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.activity_seat_book:
+                Toast.makeText(mContext, String.valueOf(getTicketCount()), Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(mContext, TripDetailActivity.class));
                 break;
             case R.id.header_app_back:
                 onBackPressed();
                 break;
         }
+    }
+
+    private int getTicketCount() {
+        int count = 0;
+        for (int i = 0; i < mSeat.size(); i++) {
+            if (mSeat.get(i).available == SELECTED)
+                count++;
+        }
+        return count;
     }
 }

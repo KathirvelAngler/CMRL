@@ -17,4 +17,5 @@
     <string name="payment_method">Payment Method</string>
     <string name="mail_invoice">Mail Invoice</string>
     <string name="get_support">Get Support</string>
+    <string name="completed">Completed</string>
 </resources>

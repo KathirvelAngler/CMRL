@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cmrl.customer.R;
@@ -33,14 +32,24 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder> 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View aView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_inflate_trip_details, parent, false);
+        View aView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_inflate_ride_history, parent, false);
         return new ViewHolder(aView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         TripDetails detail = mDetails.get(position);
-        holder.mLable.setText(detail.detail);
+
+        if (position == 0) {
+            holder.mStatus.setText("Inprogress");
+            holder.mStatus.setTextColor(mContext.getResources().getColor(R.color.app_light_blue));
+        } else if (position == 3) {
+            holder.mStatus.setText("Cancelled");
+            holder.mStatus.setTextColor(mContext.getResources().getColor(R.color.app_red));
+        } else {
+            holder.mStatus.setText("Completed");
+            holder.mStatus.setTextColor(mContext.getResources().getColor(R.color.app_green));
+        }
     }
 
     @Override
@@ -50,13 +59,12 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder> 
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView mLable;
-        ImageView mIcon;
+        TextView mStatus;
 
         ViewHolder(View aView) {
             super(aView);
-            mIcon = aView.findViewById(R.id.inflate_trip_icon);
-            mLable = aView.findViewById(R.id.inflate_trip_name);
+
+            mStatus = aView.findViewById(R.id.inflate_ride_status);
         }
     }
 }
