@@ -100,7 +100,6 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.activity_book_search_cab:
                 startActivity(new Intent(mContext, RouteActivity.class));
-//                startActivity(new Intent(mContext, BookingActivity.class));
                 break;
         }
 

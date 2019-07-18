@@ -1,6 +1,7 @@
 package com.cmrl.customer.activity.book.route;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cmrl.customer.R;
+import com.cmrl.customer.activity.book.BookingActivity;
 import com.cmrl.customer.base.BaseFragment;
 import com.cmrl.customer.helper.AppHelper;
 import com.cmrl.customer.model.Route;
@@ -23,7 +25,7 @@ import java.util.ArrayList;
  * Created by Mathan on 18-07-2019.
  */
 
-public class RouteFragment extends BaseFragment {
+public class RouteFragment extends BaseFragment implements RouteAdapter.Callback {
 
     RecyclerView mRouteRecycler;
     RouteAdapter mAdapter;
@@ -74,7 +76,7 @@ public class RouteFragment extends BaseFragment {
     private void initRecycler() {
         mRouteRecycler.setLayoutManager(new LinearLayoutManager(mContext));
         mRouteRecycler.setHasFixedSize(true);
-        mAdapter = new RouteAdapter(mContext, mRoutes);
+        mAdapter = new RouteAdapter(mContext, mRoutes, this);
         mRouteRecycler.setAdapter(mAdapter);
 
         RecyclerSectionItemDecorationList itemDecoration = new RecyclerSectionItemDecorationList(
@@ -141,5 +143,10 @@ public class RouteFragment extends BaseFragment {
     @Override
     public boolean clickListener() {
         return false;
+    }
+
+    @Override
+    public void select(int aPosition) {
+        startActivity(new Intent(mContext, BookingActivity.class));
     }
 }

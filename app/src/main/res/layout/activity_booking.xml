@@ -161,11 +161,10 @@
                         android:orientation="horizontal"
                         android:padding="5dp">
 
-                        <android.support.v7.widget.AppCompatCheckBox
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:checked="true"
-                            android:enabled="false" />
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:background="@drawable/bg_border_gray_filled" />
 
                         <TextView
                             style="@style/SubTitleSmall"
@@ -177,8 +176,8 @@
                             android:textStyle="bold" />
 
                         <ImageView
-                            android:layout_width="17dp"
-                            android:layout_height="17dp"
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
                             android:background="@drawable/bg_border_gray" />
 
                         <TextView

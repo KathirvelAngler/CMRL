@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.cmrl.customer.R;
 import com.cmrl.customer.model.Route;
@@ -22,10 +23,12 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ItemViewHold
 
     private Context mContext;
     private ArrayList<Route> mDetails;
+    private Callback mCallback;
 
-    public RouteAdapter(Context aContext, ArrayList<Route> details) {
+    RouteAdapter(Context aContext, ArrayList<Route> details, Callback callback) {
         mContext = aContext;
         mDetails = details;
+        mCallback = callback;
     }
 
     @NonNull
@@ -38,6 +41,14 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ItemViewHold
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         Route detail = mDetails.get(position);
+
+        holder.mItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.select(position);
+            }
+        });
+
     }
 
     @Override
@@ -45,10 +56,20 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ItemViewHold
         return mDetails.size();
     }
 
-    public class ItemViewHolder extends RecyclerView.ViewHolder {
+    class ItemViewHolder extends RecyclerView.ViewHolder {
+
+        LinearLayout mItem;
 
         ItemViewHolder(View aView) {
             super(aView);
+
+            mItem = aView.findViewById(R.id.inflate_route_item);
         }
+
+
+    }
+
+    public interface Callback {
+        void select(int aPosition);
     }
 }

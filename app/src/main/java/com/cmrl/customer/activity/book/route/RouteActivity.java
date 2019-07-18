@@ -59,7 +59,6 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
             mTitle.add(title);
         }
 
-        mRouteTitle.setText(mTitle.get(0));
         initArrow(0);
         initViewPager();
 
@@ -69,7 +68,6 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
         FragmentManager aFragmentManager = getSupportFragmentManager();
         mViewPager.setAdapter(new ScreenSlidePagerAdapter(aFragmentManager, mTitle.size()));
         mViewPager.setPageTransformer(true, new DepthPageTransformer());
-//        mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         mViewPager.setOffscreenPageLimit(1);
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -80,7 +78,6 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
 
             @Override
             public void onPageSelected(int i) {
-                mRouteTitle.setText(mTitle.get(i));
                 initArrow(i);
             }
 
@@ -92,6 +89,7 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
     }
 
     private void initArrow(int i) {
+        mRouteTitle.setText(mTitle.get(i));
         mLeftArrow.setVisibility(View.VISIBLE);
         mRightArrow.setVisibility(View.VISIBLE);
         if (i == 0)
@@ -101,10 +99,6 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
 
     }
 
-    /**
-     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
-     * sequence.
-     */
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
         int size;
 
@@ -112,7 +106,6 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
             super(fm);
             this.size = i;
         }
-
 
         @Override
         public Fragment getItem(int position) {
