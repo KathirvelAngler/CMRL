@@ -12,6 +12,7 @@ import com.ajithvgiri.searchdialog.OnSearchItemSelected;
 import com.ajithvgiri.searchdialog.SearchListItem;
 import com.ajithvgiri.searchdialog.SearchableDialog;
 import com.cmrl.customer.R;
+import com.cmrl.customer.activity.book.route.RouteActivity;
 import com.cmrl.customer.base.BaseActivity;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
 
         SearchableDialog searchableDialog = new SearchableDialog(this, mData, title);
         for (int i = 0; i < 30; i++) {
-            SearchListItem data = new SearchListItem(i + 1, String.valueOf(i));
+            SearchListItem data = new SearchListItem(i, String.format("Route %s", i + 1));
             mData.add(data);
         }
         searchableDialog.show();
@@ -98,7 +99,8 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
                 initDialog("Drop", mDropLocation);
                 break;
             case R.id.activity_book_search_cab:
-                startActivity(new Intent(mContext, BookingActivity.class));
+                startActivity(new Intent(mContext, RouteActivity.class));
+//                startActivity(new Intent(mContext, BookingActivity.class));
                 break;
         }
 

@@ -6,12 +6,14 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import android.support.v4.content.ContextCompat
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.cmrl.customer.R
 import com.cmrl.customer.utils.SingleChoiceAdapter
@@ -81,6 +83,46 @@ object AppHelper {
 
     fun getColor(context: Context, i: Int): Int {
         return ContextCompat.getColor(context, i)
+    }
+
+    fun showNoData(view: View, show: Boolean, icon: Int?, msg: String?) {
+        try {
+            val mNodataLayout = view.findViewById<LinearLayout>(R.id.layout_nodata_layout)
+            val mNodataImage = view.findViewById<ImageView>(R.id.layout_nodata_image)
+            val mNodataMessage = view.findViewById<TextView>(R.id.layout_nodata_message)
+
+            if (show) {
+                mNodataLayout.visibility = View.VISIBLE
+                icon?.let { mNodataImage.setImageResource(it) }
+                msg?.let { mNodataMessage.text = msg }
+            } else mNodataLayout.visibility = View.GONE
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    fun showNoData(view: View, show: Boolean, msg: String?) {
+        try {
+            val mNodataLayout = view.findViewById<LinearLayout>(R.id.layout_nodata_layout)
+            val mNodataImage = view.findViewById<ImageView>(R.id.layout_nodata_image)
+            val mNodataMessage = view.findViewById<TextView>(R.id.layout_nodata_message)
+
+            if (show) {
+                mNodataLayout.visibility = View.VISIBLE
+                mNodataImage.setImageResource(R.mipmap.ic_launcher_round)
+                msg?.let { mNodataMessage.text = msg }
+            } else mNodataLayout.visibility = View.GONE
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    fun swipeRefColor(context: Context, swipe: SwipeRefreshLayout) {
+        swipe.setColorSchemeColors(
+                getColor(context, R.color.app_blue),
+                getColor(context, R.color.app_light_blue),
+                getColor(context, R.color.app_gray)
+        )
     }
 
 }

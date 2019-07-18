@@ -16,12 +16,14 @@ public class DummyActivity extends BaseActivity implements View.OnClickListener 
 
     ImageView mBack;
     Context mContext;
+    View mView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_cab);
 
+        mView = getWindow().getDecorView().getRootView();
         mContext = this;
         mBack = findViewById(R.id.header_app_back);
 

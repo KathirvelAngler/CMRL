@@ -53,13 +53,13 @@
                     android:layout_marginStart="-12.5dp"
                     android:layout_marginLeft="-12.5dp"
                     android:src="@mipmap/ic_circle_solid"
-                    android:tint="@color/app_white" />
+                    android:tint="@color/app_light_gray" />
 
                 <View
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:layout_weight="1"
-                    android:background="@color/white" />
+                    android:background="@color/app_light_gray" />
 
                 <ImageView
                     android:layout_width="25dp"
@@ -67,7 +67,7 @@
                     android:layout_marginEnd="-12.5dp"
                     android:layout_marginRight="-12.5dp"
                     android:src="@mipmap/ic_circle_solid"
-                    android:tint="@color/app_white" />
+                    android:tint="@color/app_light_gray" />
 
             </LinearLayout>
 

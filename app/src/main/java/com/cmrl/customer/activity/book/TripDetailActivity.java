@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.cmrl.customer.R;
 import com.cmrl.customer.activity.book.adapter.TripAdapter;
+import com.cmrl.customer.activity.book.route.RideHistoryActivity;
 import com.cmrl.customer.base.BaseActivity;
 import com.cmrl.customer.model.TripDetails;
 
@@ -50,7 +51,7 @@ public class TripDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     private void initRecycler() {
-        mTripRecycler.setLayoutManager(new LinearLayoutManager(mContext));
+        mTripRecycler.setLayoutManager(new GridLayoutManager(mContext, 2));
         mTripRecycler.setHasFixedSize(true);
         mAdapter = new TripAdapter(mContext, mDetails);
         mTripRecycler.setAdapter(mAdapter);
@@ -61,10 +62,10 @@ public class TripDetailActivity extends BaseActivity implements View.OnClickList
     private void initDetails() {
         ArrayList<String> aDetails = new ArrayList<>();
         aDetails.add("Mathan Kumar");
-        aDetails.add("Maruti Swift");
-        aDetails.add("10 Mins / 2.1 KM");
         aDetails.add("60");
+        aDetails.add("Maruti Swift");
         aDetails.add("2 Tickets");
+        aDetails.add("10 Mins / 2.1 KM");
 
         @SuppressLint("Recycle") TypedArray icon = getResources().obtainTypedArray(R.array.trip_details_icon);
 

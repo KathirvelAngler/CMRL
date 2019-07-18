@@ -22,4 +22,6 @@
     <string name="booking_number">Booking Number</string>
     <string name="car_number">Car Number</string>
     <string name="time">Time</string>
+    <string name="no_data_found">No Data Found!</string>
+    <string name="available_routes">Available Routes</string>
 </resources>

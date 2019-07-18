@@ -15,7 +15,8 @@
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_search"
-            android:tint="@color/app_blue" />
+            android:tint="@color/app_blue"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -47,6 +48,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="2dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -69,12 +71,20 @@
                     android:padding="0dp"
                     android:text="Ashok Nagar"
                     android:textColor="@color/app_gray"
-                    android:textSize="10sp" />
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="7.5dp"
                     android:layout_height="7.5dp"
-                    android:layout_marginLeft="5dp"
                     android:src="@mipmap/ic_circle_solid"
                     android:tint="@color/app_red" />
 
@@ -91,7 +101,7 @@
                     android:padding="0dp"
                     android:text="Thousand Lights"
                     android:textColor="@color/app_gray"
-                    android:textSize="10sp" />
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -100,7 +110,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="start"
             android:orientation="vertical">
 
             <TextView
