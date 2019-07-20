@@ -1,4 +1,4 @@
-package com.cmrl.customer.fragment.home;
+package com.cmrl.customer.activity.dashboard;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;

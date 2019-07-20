@@ -1,5 +1,6 @@
 package com.cmrl.customer.activity.book.route;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +17,7 @@ import com.cmrl.customer.R;
 import com.cmrl.customer.activity.book.BookingActivity;
 import com.cmrl.customer.base.BaseFragment;
 import com.cmrl.customer.helper.AppHelper;
-import com.cmrl.customer.model.Route;
+import com.cmrl.customer.model.Routes;
 import com.cmrl.customer.utils.RecyclerSectionItemDecorationList;
 
 import java.util.ArrayList;
@@ -25,14 +26,20 @@ import java.util.ArrayList;
  * Created by Mathan on 18-07-2019.
  */
 
+@SuppressLint("ValidFragment")
 public class RouteFragment extends BaseFragment implements RouteAdapter.Callback {
 
     RecyclerView mRouteRecycler;
     RouteAdapter mAdapter;
-    ArrayList<Route> mRoutes = new ArrayList<>();
+    ArrayList<Routes> mRouteData = new ArrayList<>();
     SwipeRefreshLayout mSwipe;
     Context mContext;
     View mView;
+    Routes mRoutes;
+
+    public RouteFragment(Routes routes) {
+        this.mRoutes = routes;
+    }
 
 
     @Nullable
@@ -76,41 +83,41 @@ public class RouteFragment extends BaseFragment implements RouteAdapter.Callback
     private void initRecycler() {
         mRouteRecycler.setLayoutManager(new LinearLayoutManager(mContext));
         mRouteRecycler.setHasFixedSize(true);
-        mAdapter = new RouteAdapter(mContext, mRoutes, this);
+        mAdapter = new RouteAdapter(mContext, mRouteData, this);
         mRouteRecycler.setAdapter(mAdapter);
 
         RecyclerSectionItemDecorationList itemDecoration = new RecyclerSectionItemDecorationList(
                 R.id.inflate_header, R.layout.layout_inflate_route_header,
                 getResources().getDimensionPixelSize(R.dimen.invite_list_heading),
-                true, getSectionCallback(mRoutes));
+                true, getSectionCallback(mRouteData));
         mRouteRecycler.addItemDecoration(itemDecoration);
 
         initData(true);
     }
 
     private void initData(boolean isShow) {
-        mRoutes.clear();
-        for (int i = 0; i < 20; i++) {
-            Route route = new Route();
-            if (i == 0 || i == 3 || i == 6)
-                route.name = String.format("Aoute %s", i + 1);
-            else route.name = "Route";
-            mRoutes.add(route);
+        mRouteData.clear();
+        mRouteData.addAll(mRoutes.routeSlots);
+
+        // Adding Slot name manually
+        for (int i = 0; i < mRouteData.size(); i++) {
+            mRouteData.get(i).subId = String.format("SLOT %s", mRouteData.get(i).id);
         }
+
         mSwipe.setRefreshing(false);
-        AppHelper.INSTANCE.showNoData(mView, mRoutes.size() == 0, "No Routes Found!");
+        AppHelper.INSTANCE.showNoData(mView, mRouteData.size() == 0, "No Routes Found!");
         mAdapter.notifyDataSetChanged();
     }
 
 
-    private RecyclerSectionItemDecorationList.SectionCallback getSectionCallback(final ArrayList<Route> users) {
+    private RecyclerSectionItemDecorationList.SectionCallback getSectionCallback(final ArrayList<Routes> routes) {
         try {
             return new RecyclerSectionItemDecorationList.SectionCallback() {
                 @Override
                 public boolean isSection(int position) {
                     try {
-                        if (!users.get(position).name.equals("")) {
-                            return (position == 0 || !users.get(position).name.toLowerCase().equals(users.get(position - 1).name.toLowerCase()));
+                        if (!routes.get(position).subId.equals("")) {
+                            return (position == 0 || !routes.get(position).subId.toLowerCase().equals(routes.get(position - 1).subId.toLowerCase()));
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -122,7 +129,7 @@ public class RouteFragment extends BaseFragment implements RouteAdapter.Callback
                 public String getSectionHeader(int position) {
                     String aFirstLetter = null;
                     try {
-                        aFirstLetter = users.get(position).name.toUpperCase();
+                        aFirstLetter = routes.get(position).subId.toUpperCase();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

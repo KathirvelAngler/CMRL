@@ -8,9 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.cmrl.customer.R;
-import com.cmrl.customer.model.Route;
+import com.cmrl.customer.model.Routes;
 import com.cmrl.customer.preference.CMRLConstants;
 
 import java.util.ArrayList;
@@ -22,12 +23,12 @@ import java.util.ArrayList;
 public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ItemViewHolder> implements CMRLConstants {
 
     private Context mContext;
-    private ArrayList<Route> mDetails;
+    private ArrayList<Routes> mRoutes;
     private Callback mCallback;
 
-    RouteAdapter(Context aContext, ArrayList<Route> details, Callback callback) {
+    RouteAdapter(Context aContext, ArrayList<Routes> details, Callback callback) {
         mContext = aContext;
-        mDetails = details;
+        mRoutes = details;
         mCallback = callback;
     }
 
@@ -40,7 +41,12 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ItemViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, @SuppressLint("RecyclerView") final int position) {
-        Route detail = mDetails.get(position);
+        Routes routes = mRoutes.get(position);
+
+        holder.mCabNumber.setText(routes.cabNumber);
+        holder.mTime.setText(routes.scheduleSlot);
+        holder.mSeat.setText(String.valueOf(routes.availableSeats));
+        holder.mDistance.setText(String.valueOf(routes.distance));
 
         holder.mItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,17 +59,22 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ItemViewHold
 
     @Override
     public int getItemCount() {
-        return mDetails.size();
+        return mRoutes.size();
     }
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
 
         LinearLayout mItem;
+        TextView mCabNumber, mTime, mSeat, mDistance;
 
         ItemViewHolder(View aView) {
             super(aView);
 
             mItem = aView.findViewById(R.id.inflate_route_item);
+            mCabNumber = aView.findViewById(R.id.inflate_route_cab_number);
+            mTime = aView.findViewById(R.id.inflate_route_cab_time);
+            mSeat = aView.findViewById(R.id.inflate_route_cab_seat);
+            mDistance = aView.findViewById(R.id.inflate_route_cab_distance);
         }
 
 

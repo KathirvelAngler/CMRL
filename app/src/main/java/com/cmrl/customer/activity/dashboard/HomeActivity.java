@@ -1,4 +1,4 @@
-package com.cmrl.customer.activity;
+package com.cmrl.customer.activity.dashboard;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.cmrl.customer.R;
-import com.cmrl.customer.fragment.home.HomeFragment;
 
 /**
  * Created by Mathan on 08-07-2019.

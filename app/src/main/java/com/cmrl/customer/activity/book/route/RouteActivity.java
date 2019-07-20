@@ -1,6 +1,7 @@
 package com.cmrl.customer.activity.book.route;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -12,10 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cmrl.customer.R;
+import com.cmrl.customer.model.Routes;
 import com.cmrl.customer.utils.DepthPageTransformer;
-import com.cmrl.customer.utils.ZoomOutPageTransformer;
-
-import java.util.ArrayList;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 /**
  * Created by Mathan on 17-07-2019.
@@ -28,7 +29,7 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
     Context mContext;
     View mView;
     ViewPager mViewPager;
-    ArrayList<String> mTitle = new ArrayList<>();
+    Routes mRoutes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,24 +50,27 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
 
         clickListener();
 
-        initData();
+        initBundle();
 
     }
 
-    private void initData() {
-        for (int i = 0; i < 5; i++) {
-            String title = String.format("Route %s", i + 1);
-            mTitle.add(title);
+    private void initBundle() {
+        try {
+            Intent intent = getIntent();
+            if (intent != null) {
+                mRoutes = new Gson().fromJson(intent.getExtras().getString("routes"), Routes.class);
+            }
+
+            initArrow(0);
+            initViewPager();
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
         }
-
-        initArrow(0);
-        initViewPager();
-
     }
 
     private void initViewPager() {
         FragmentManager aFragmentManager = getSupportFragmentManager();
-        mViewPager.setAdapter(new ScreenSlidePagerAdapter(aFragmentManager, mTitle.size()));
+        mViewPager.setAdapter(new ScreenSlidePagerAdapter(aFragmentManager, mRoutes));
         mViewPager.setPageTransformer(true, new DepthPageTransformer());
         mViewPager.setOffscreenPageLimit(1);
 
@@ -89,32 +93,32 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
     }
 
     private void initArrow(int i) {
-        mRouteTitle.setText(mTitle.get(i));
+        mRouteTitle.setText(mRoutes.data.get(i).routeName);
         mLeftArrow.setVisibility(View.VISIBLE);
         mRightArrow.setVisibility(View.VISIBLE);
         if (i == 0)
             mLeftArrow.setVisibility(View.INVISIBLE);
-        if (i == mTitle.size() - 1)
+        if (i == mRoutes.data.size() - 1)
             mRightArrow.setVisibility(View.INVISIBLE);
 
     }
 
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
-        int size;
+        Routes aRoutes;
 
-        ScreenSlidePagerAdapter(FragmentManager fm, int i) {
+        ScreenSlidePagerAdapter(FragmentManager fm, Routes routes) {
             super(fm);
-            this.size = i;
+            this.aRoutes = routes;
         }
 
         @Override
         public Fragment getItem(int position) {
-            return new RouteFragment();
+            return new RouteFragment(aRoutes.data.get(position));
         }
 
         @Override
         public int getCount() {
-            return size;
+            return aRoutes.data.size();
         }
     }
 

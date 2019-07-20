@@ -16,6 +16,17 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+
+        debug {
+            debuggable true
+            minifyEnabled true
+            shrinkResources true
+
+            buildConfigField "String", "API_URL", '"http://192.168.0.11:8080"'
+
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }

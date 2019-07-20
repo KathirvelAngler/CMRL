@@ -5,15 +5,15 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 /**
- * Created by Mathan on 08-07-2019.
+ * Created by Mathan on 19-07-2019.
  */
 
 public class Response implements Serializable {
 
-    @SerializedName("response_code")
-    public int responseCode;
+    @SerializedName("code")
+    public String responseCode;
 
-    @SerializedName("response_message")
+    @SerializedName("message")
     public String message;
 
     @SerializedName("custom_message")
@@ -37,7 +37,7 @@ public class Response implements Serializable {
      * @return true if the response gets success id
      */
     public boolean isSuccess() {
-        return responseCode == 200;
+        return responseCode.equals("200");
     }
 
     @Override

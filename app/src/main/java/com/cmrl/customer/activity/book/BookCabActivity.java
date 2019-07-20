@@ -13,7 +13,14 @@ import com.ajithvgiri.searchdialog.SearchListItem;
 import com.ajithvgiri.searchdialog.SearchableDialog;
 import com.cmrl.customer.R;
 import com.cmrl.customer.activity.book.route.RouteActivity;
+import com.cmrl.customer.api.AppServices;
 import com.cmrl.customer.base.BaseActivity;
+import com.cmrl.customer.helper.AppDialogs;
+import com.cmrl.customer.http.Response;
+import com.cmrl.customer.http.ResponseListener;
+import com.cmrl.customer.model.Routes;
+import com.cmrl.customer.model.Stops;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -21,11 +28,11 @@ import java.util.ArrayList;
  * Created by Mathan on 12-07-2019.
  */
 
-public class BookCabActivity extends BaseActivity implements View.OnClickListener {
+public class BookCabActivity extends BaseActivity implements View.OnClickListener, ResponseListener {
 
     Button mSearchCab;
     Context mContext;
-    ArrayList<SearchListItem> mData = new ArrayList<>();
+    ArrayList<SearchListItem> mData;
     TextView mPickLocation, mDropLocation;
     ImageView mBack;
 
@@ -44,13 +51,9 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
         clickListener();
     }
 
-    private void initDialog(String title, final TextView view) {
+    private void initDialog(String title, ArrayList<SearchListItem> mData, final TextView view) {
 
         SearchableDialog searchableDialog = new SearchableDialog(this, mData, title);
-        for (int i = 0; i < 30; i++) {
-            SearchListItem data = new SearchListItem(i, String.format("Route %s", i + 1));
-            mData.add(data);
-        }
         searchableDialog.show();
         searchableDialog.setOnItemSelected(new OnSearchItemSelected() {
             @Override
@@ -93,14 +96,78 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
                 onBackPressed();
                 break;
             case R.id.activity_book_pick_location:
-                initDialog("Pick", mPickLocation);
+                getStations();
                 break;
             case R.id.activity_book_drop_location:
-                initDialog("Drop", mDropLocation);
+                getStops();
                 break;
             case R.id.activity_book_search_cab:
-                startActivity(new Intent(mContext, RouteActivity.class));
+                searchRoutes();
                 break;
+        }
+
+    }
+
+    private void searchRoutes() {
+        if (checkInternet()) {
+            AppDialogs.showProgressDialog(mContext);
+            AppServices.searchRoutes(mContext, 1, 5);
+        }
+    }
+
+    private void getStops() {
+        if (checkInternet()) {
+            AppDialogs.showProgressDialog(mContext);
+            AppServices.getStops(mContext);
+        }
+    }
+
+    private void getStations() {
+        if (checkInternet()) {
+            AppDialogs.showProgressDialog(mContext);
+            AppServices.getStations(mContext);
+        }
+    }
+
+    @Override
+    public void onResponse(Response response) {
+        AppDialogs.hideProgressDialog();
+        if (response != null) {
+            if (response.requestType == AppServices.API.stations.hashCode()) {
+                if (response.isSuccess()) {
+                    Stops stops = ((Stops) response);
+                    if (stops.data.size() > 0) {
+                        mData = new ArrayList<>();
+                        for (int i = 0; i < stops.data.size(); i++) {
+                            SearchListItem data = new SearchListItem(i, stops.data.get(i).name);
+                            mData.add(data);
+                        }
+                        initDialog("Pick", mData, mPickLocation);
+                    }
+                } else AppDialogs.okAction(mContext, response.message);
+            } else if (response.requestType == AppServices.API.stops.hashCode()) {
+                if (response.isSuccess()) {
+                    Stops stops = ((Stops) response);
+                    if (stops.data.size() > 0) {
+                        mData = new ArrayList<>();
+                        for (int i = 0; i < stops.data.size(); i++) {
+                            SearchListItem data = new SearchListItem(i, stops.data.get(i).name);
+                            mData.add(data);
+                        }
+                        initDialog("Drop", mData, mDropLocation);
+                    }
+                } else AppDialogs.okAction(mContext, response.message);
+            } else if (response.requestType == AppServices.API.routes.hashCode()) {
+                if (response.isSuccess()) {
+                    Routes routes = ((Routes) response);
+                    if (routes.data.size() > 0) {
+                        Intent intent = new Intent(mContext, RouteActivity.class);
+                        intent.putExtra("routes", new Gson().toJson(routes));
+                        startActivity(intent);
+                    }
+
+                } else AppDialogs.okAction(mContext, response.message);
+            }
         }
 
     }
