@@ -41,13 +41,13 @@
 
                     <ImageView
                         android:id="@+id/header_app_icon"
-                        style="@style/HeaderAppIcon"
+                        android:layout_gravity="center"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:tint="@color/app_blue" />
+                        android:src="@drawable/ic_book_cab" />
 
                     <TextView
-                        style="@style/SubTitleSmall"
+                        style="@style/SubTitle"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
@@ -62,18 +62,30 @@
                         android:orientation="vertical"
                         android:padding="15dp">
 
-                        <TextView
-                            style="@style/SubTitle"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:drawableRight="@mipmap/ic_seat"
-                            android:drawablePadding="5dp"
-                            android:gravity="end"
-                            android:padding="0dp"
-                            android:text="4"
-                            android:textColor="@color/app_blue"
-                            android:textSize="24sp"
-                            android:textStyle="bold" />
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/SubTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="end"
+                                android:padding="2dp"
+                                android:text="4"
+                                android:textColor="@color/app_blue"
+                                android:textSize="24sp"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:layout_width="23dp"
+                                android:layout_height="23dp"
+                                android:layout_gravity="center"
+                                android:src="@mipmap/ic_seat" />
+
+                        </LinearLayout>
 
                         <TextView
                             style="@style/SubTitleSmall"

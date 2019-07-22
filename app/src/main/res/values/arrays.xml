@@ -5,12 +5,26 @@
         <item>@string/drop_home</item>
     </string-array>
 
+    <string-array name="home_menu">
+        <item>Book Cab</item>
+        <item>Track Cab</item>
+        <item>History</item>
+        <item>Help</item>
+    </string-array>
+
+    <string-array name="home_menu_icons">
+        <item>@drawable/home_book_cab</item>
+        <item>@drawable/home_track_cab</item>
+        <item>@drawable/home_history</item>
+        <item>@drawable/home_help</item>
+    </string-array>
+
     <string-array name="trip_details_icon">
-        <item>@drawable/ic_metro_icon</item>
-        <item>@drawable/ic_metro_icon</item>
-        <item>@drawable/ic_metro_icon</item>
-        <item>@drawable/ic_metro_icon</item>
-        <item>@drawable/ic_metro_icon</item>
+        <item>@drawable/ic_user</item>
+        <item>@drawable/ic_rupee</item>
+        <item>@drawable/ic_car</item>
+        <item>@drawable/ic_ticket</item>
+        <item>@drawable/ic_clock</item>
     </string-array>
 
 </resources>

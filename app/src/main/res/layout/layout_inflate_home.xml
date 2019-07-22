@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/inflate_home_menu"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/inflate_home_menu"
-    android:layout_margin="15dp"
-    app:cardBackgroundColor="@color/app_blue"
+    android:layout_margin="5dp"
+    app:cardBackgroundColor="@color/app_light_blue"
     app:cardCornerRadius="7.5dp"
     app:cardElevation="2dp">
 
@@ -13,15 +13,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="5dp"
-        android:padding="15dp"
         android:background="@android:color/white"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="15dp">
 
         <ImageView
+            android:id="@+id/inflate_home_menu_icon"
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:src="@mipmap/ic_launcher_round" />
+            android:scaleType="fitCenter" />
 
         <TextView
             android:id="@+id/inflate_home_menu_name"
@@ -30,7 +31,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:padding="10dp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/app_blue"
             android:textSize="18sp"
             android:textStyle="bold" />
 

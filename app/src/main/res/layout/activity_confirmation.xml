@@ -25,12 +25,11 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:layout_gravity="center"
-                android:layout_margin="15dp"
-                android:src="@drawable/ic_metro_icon"
-                android:tint="@color/app_white" />
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_book_cab" />
 
             <TextView
                 style="@style/SubTitle"
