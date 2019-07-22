@@ -1,4 +1,4 @@
-package com.cmrl.customer.activity.book.route;
+package com.cmrl.customer.activity.book;
 
 import android.content.Context;
 import android.os.Bundle;

@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.cmrl.customer.R;
 import com.cmrl.customer.activity.book.adapter.TripAdapter;
-import com.cmrl.customer.activity.book.route.RideHistoryActivity;
 import com.cmrl.customer.base.BaseActivity;
 import com.cmrl.customer.model.TripDetails;
 

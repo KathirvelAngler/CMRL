@@ -72,7 +72,6 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
         FragmentManager aFragmentManager = getSupportFragmentManager();
         mViewPager.setAdapter(new ScreenSlidePagerAdapter(aFragmentManager, mRoutes));
         mViewPager.setPageTransformer(true, new DepthPageTransformer());
-        mViewPager.setOffscreenPageLimit(1);
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

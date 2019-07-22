@@ -72,4 +72,17 @@ public class AppServices {
         }
     }
 
+    public static void getRoutes(Context aContext, ResponseListener listener, int id) {
+        try {
+            // Generating Req
+            String url = String.format("%s/%s", constructUrl(API.routes), id);
+
+            RestClient client = new RestClient(aContext, Request.Method.GET,
+                    url, API.routes.hashCode());
+            client.execute(listener, Routes.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

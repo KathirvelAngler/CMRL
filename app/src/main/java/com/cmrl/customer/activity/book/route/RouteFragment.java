@@ -15,8 +15,12 @@ import android.view.ViewGroup;
 
 import com.cmrl.customer.R;
 import com.cmrl.customer.activity.book.BookingActivity;
+import com.cmrl.customer.api.AppServices;
 import com.cmrl.customer.base.BaseFragment;
+import com.cmrl.customer.helper.AppDialogs;
 import com.cmrl.customer.helper.AppHelper;
+import com.cmrl.customer.http.Response;
+import com.cmrl.customer.http.ResponseListener;
 import com.cmrl.customer.model.Routes;
 import com.cmrl.customer.utils.RecyclerSectionItemDecorationList;
 
@@ -27,7 +31,7 @@ import java.util.ArrayList;
  */
 
 @SuppressLint("ValidFragment")
-public class RouteFragment extends BaseFragment implements RouteAdapter.Callback {
+public class RouteFragment extends BaseFragment implements RouteAdapter.Callback, ResponseListener {
 
     RecyclerView mRouteRecycler;
     RouteAdapter mAdapter;
@@ -71,13 +75,20 @@ public class RouteFragment extends BaseFragment implements RouteAdapter.Callback
         mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                initData(false);
+                loadData();
             }
         });
 
         initRecycler();
 
         return false;
+    }
+
+    private void loadData() {
+        if (checkInternet()) {
+            AppServices.getRoutes(mContext, this, 3);
+//            AppServices.getRoutes(mContext, mRoutes.routeId);
+        }
     }
 
     private void initRecycler() {
@@ -92,12 +103,12 @@ public class RouteFragment extends BaseFragment implements RouteAdapter.Callback
                 true, getSectionCallback(mRouteData));
         mRouteRecycler.addItemDecoration(itemDecoration);
 
-        initData(true);
+        initData(mRoutes.routeSlots);
     }
 
-    private void initData(boolean isShow) {
+    private void initData(ArrayList<Routes> routeSlots) {
         mRouteData.clear();
-        mRouteData.addAll(mRoutes.routeSlots);
+        mRouteData.addAll(routeSlots);
 
         // Adding Slot name manually
         for (int i = 0; i < mRouteData.size(); i++) {
@@ -155,5 +166,23 @@ public class RouteFragment extends BaseFragment implements RouteAdapter.Callback
     @Override
     public void select(int aPosition) {
         startActivity(new Intent(mContext, BookingActivity.class));
+    }
+
+    @Override
+    public void onResponse(Response response) {
+        AppDialogs.hideProgressDialog();
+        mSwipe.setRefreshing(false);
+        try {
+            if (response != null) {
+                if (response.requestType == AppServices.API.routes.hashCode()) {
+                    if (response.isSuccess()) {
+                        Routes routes = ((Routes) response);
+                        initData(routes.data.get(0).routeSlots);
+                    } else AppDialogs.okAction(mContext, response.message);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
