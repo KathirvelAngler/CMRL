@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">CMRL Customer</string>
     <string name="book_cab">Book Cab</string>
+    <string name="track_cab">Track Cab</string>
     <string name="your_rides">Your Rides</string>
     <string name="trip_details">Trip Details</string>
     <string name="book_confirm">Booking Confirmation</string>
@@ -24,4 +25,5 @@
     <string name="time">Time</string>
     <string name="no_data_found">No Data Found!</string>
     <string name="available_routes">Available Routes</string>
+    <string name="track">Track</string>
 </resources>

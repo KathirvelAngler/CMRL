@@ -25,6 +25,7 @@ android {
             shrinkResources true
 
             buildConfigField "String", "API_URL", '"http://192.168.0.11:8080"'
+            resValue "string", "MAP_KEY", "AIzaSyD809SXzKBHE2dVmAaxW6uelc-p-N8V6po"
 
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -46,8 +47,10 @@ dependencies {
     // Widget
     implementation 'lib.kingja.switchbutton:switchbutton:1.1.8'
     implementation 'com.github.ajithvgiri:search-dialog:v1.1'
-
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+
+    // Google
+    implementation 'com.google.android.gms:play-services:12.0.1'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

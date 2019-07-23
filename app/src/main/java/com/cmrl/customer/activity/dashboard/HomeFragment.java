@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.cmrl.customer.R;
 import com.cmrl.customer.activity.book.BookCabActivity;
+import com.cmrl.customer.activity.track.TrackCabActivity;
 import com.cmrl.customer.base.BaseFragment;
 
 import java.util.ArrayList;
@@ -97,12 +98,15 @@ public class HomeFragment extends BaseFragment implements HomeAdapter.Callback {
             case 0:
                 startActivity(new Intent(mContext, BookCabActivity.class));
                 break;
+            case 1:
+                startActivity(new Intent(mContext, TrackCabActivity.class));
+                break;
         }
     }
 
-    public class Home {
-        public String name = "";
-        public Drawable icon;
+    class Home {
+        String name = "";
+        Drawable icon;
     }
 
 }
