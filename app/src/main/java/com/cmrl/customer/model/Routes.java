@@ -15,13 +15,25 @@ public class Routes extends Response {
     @SerializedName("data")
     public ArrayList<Routes> data = new ArrayList<>();
 
-    @SerializedName("routeId")
-    public int routeId;
+    @SerializedName("dropStopName")
+    public String dropStopName = "";
+
+    @SerializedName("dropStopId")
+    public int dropStopId;
+
+    @SerializedName("route")
+    public ArrayList<Routes> routes = new ArrayList<>();
 
     @SerializedName("routeName")
     public String routeName = "";
 
-    @SerializedName("routeSlot")
+    @SerializedName("routeUrl")
+    public String routeUrl = "";
+
+    @SerializedName("routeId")
+    public int routeId;
+
+    @SerializedName("slot")
     public ArrayList<Routes> routeSlots = new ArrayList<>();
 
     @SerializedName("id")

@@ -3,6 +3,7 @@
     android:id="@+id/inflate_route_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/app_white"
     android:orientation="vertical">
 
     <LinearLayout

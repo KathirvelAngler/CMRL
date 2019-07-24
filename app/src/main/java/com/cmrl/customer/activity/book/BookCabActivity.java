@@ -165,7 +165,7 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
                             Intent intent = new Intent(mContext, RouteActivity.class);
                             intent.putExtra("routes", new Gson().toJson(routes));
                             startActivity(intent);
-                        }
+                        } else AppDialogs.okAction(mContext, "No Routes Available!");
                     } else AppDialogs.okAction(mContext, response.message);
                 }
             }

@@ -99,20 +99,27 @@ public class RouteFragment extends BaseFragment implements RouteAdapter.Callback
 
         RecyclerSectionItemDecorationList itemDecoration = new RecyclerSectionItemDecorationList(
                 R.id.inflate_header, R.layout.layout_inflate_route_header,
-                getResources().getDimensionPixelSize(R.dimen.invite_list_heading),
-                true, getSectionCallback(mRouteData));
+                getResources().getDimensionPixelSize(R.dimen.invite_list_heading), true,
+                getSectionCallback(mRouteData));
         mRouteRecycler.addItemDecoration(itemDecoration);
 
-        initData(mRoutes.routeSlots);
+        initData(mRoutes.routes);
     }
 
-    private void initData(ArrayList<Routes> routeSlots) {
+    private void initData(ArrayList<Routes> routes) {
         mRouteData.clear();
-        mRouteData.addAll(routeSlots);
 
-        // Adding Slot name manually
-        for (int i = 0; i < mRouteData.size(); i++) {
-            mRouteData.get(i).subId = String.format("SLOT %s", mRouteData.get(i).id);
+        // Adding Items
+        for (int i = 0; i < routes.size(); i++) {
+            mRouteData.addAll(routes.get(i).routeSlots);
+        }
+
+        // Adding Sticky Header
+        for (int x = 0; x < routes.size(); x++) {
+            if (routes.get(x).routeSlots.size() != 0)
+                for (int i = 0; i < mRouteData.size(); i++) {
+                    mRouteData.get(i).subId = routes.get(x).routeName;
+                }
         }
 
         mSwipe.setRefreshing(false);
@@ -140,7 +147,7 @@ public class RouteFragment extends BaseFragment implements RouteAdapter.Callback
                 public String getSectionHeader(int position) {
                     String aFirstLetter = null;
                     try {
-                        aFirstLetter = routes.get(position).subId.toUpperCase();
+                        aFirstLetter = routes.get(position).subId;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

@@ -92,7 +92,7 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
     }
 
     private void initArrow(int i) {
-        mRouteTitle.setText(mRoutes.data.get(i).routeName);
+        mRouteTitle.setText(mRoutes.data.get(i).dropStopName);
         mLeftArrow.setVisibility(View.VISIBLE);
         mRightArrow.setVisibility(View.VISIBLE);
         if (i == 0)
