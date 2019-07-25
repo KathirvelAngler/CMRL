@@ -14,7 +14,12 @@ import android.widget.Toast;
 
 import com.cmrl.customer.R;
 import com.cmrl.customer.activity.book.adapter.BookSeatAdapter;
+import com.cmrl.customer.api.AppServices;
 import com.cmrl.customer.base.BaseActivity;
+import com.cmrl.customer.helper.AppDialogs;
+import com.cmrl.customer.helper.ImageLoader;
+import com.cmrl.customer.http.Response;
+import com.cmrl.customer.http.ResponseListener;
 import com.cmrl.customer.model.Seat;
 
 import java.util.ArrayList;
@@ -28,17 +33,19 @@ import static com.cmrl.customer.preference.CMRLConstants.SELECTED;
  * Created by Mathan on 13-07-2019.
  */
 
-public class BookingActivity extends BaseActivity implements BookSeatAdapter.Callback, View.OnClickListener {
+public class BookingActivity extends BaseActivity implements BookSeatAdapter.Callback,
+        View.OnClickListener, ResponseListener {
     RecyclerView mSeatSelection;
     Context mContext;
     BookSeatAdapter mAdapter;
     ArrayList<Seat> mSeat = new ArrayList<>();
-    int mSpanCount = 8, maxSeats = 6;
-    double mPrice = 15, mTotal = 0;
+    int mSpanCount = 8, maxSeats, mAvailable;
+    double mPrice = 0, mTotal = 0;
     LinearLayout mFareLayout;
-    TextView mFare;
+    TextView mFare, mBookDate, mBookCab, mBookNoSeat, mBookFrom, mBookTo;
     Button mBookSeat;
-    ImageView mBack;
+    ImageView mBack, mBookMap;
+    Seat mDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +59,34 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
         mBookSeat = findViewById(R.id.activity_seat_book);
         mBack = findViewById(R.id.header_app_back);
 
+        mBookDate = findViewById(R.id.activity_book_date);
+        mBookCab = findViewById(R.id.activity_book_cab);
+        mBookNoSeat = findViewById(R.id.activity_book_seat);
+        mBookFrom = findViewById(R.id.activity_book_from);
+        mBookTo = findViewById(R.id.activity_book_to);
+        mBookMap = findViewById(R.id.activity_book_map);
+
         clickListener();
 
-        initDate();
+        initBundle();
 
-        initRecycler();
+    }
+
+    @Override
+    public boolean initBundle() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            int id = intent.getExtras().getInt("id");
+            getDetails(id);
+        }
+        return true;
+    }
+
+    private void getDetails(int id) {
+        if (checkInternet()) {
+            AppDialogs.showProgressDialog(mContext);
+            AppServices.getBookDetails(mContext, id);
+        } else AppDialogs.okAction(mContext, getString(R.string.no_internet));
     }
 
     private void initRecycler() {
@@ -67,15 +97,30 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
         mSeatSelection.setAdapter(mAdapter);
     }
 
-    private void initDate() {
+    private void initDetails(Seat mDetails) {
+        maxSeats = mDetails.cabCapacity;
+        mAvailable = mDetails.availableSeats;
+        mPrice = mDetails.fare;
+
+        mBookDate.setText("25 July,2019");
+        mBookCab.setText(mDetails.cabNumber);
+        mBookNoSeat.setText(String.valueOf(mDetails.availableSeats));
+        mBookFrom.setText(mDetails.firstStopName);
+        mBookTo.setText(mDetails.lastStopName);
+
+        if (!mDetails.routeUrl.isEmpty())
+            ImageLoader.loadImage(mContext, mBookMap, mDetails.routeUrl,
+                    R.drawable.bg_booking, R.drawable.bg_booking);
+
         mSeat.clear();
         for (int i = 0; i < maxSeats; i++) {
             Seat seat = new Seat();
-            seat.status = String.valueOf(i + 1);
-            if (i == 0 || i == 3)
+            if (i < maxSeats - mAvailable)
                 seat.available = BOOKED;
             mSeat.add(seat);
         }
+
+        initRecycler();
 
         if (mAdapter != null)
             mAdapter.notifyDataSetChanged();
@@ -85,11 +130,6 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
     protected void onResume() {
         super.onResume();
         initHeader();
-    }
-
-    @Override
-    public boolean initBundle() {
-        return false;
     }
 
     @Override
@@ -148,5 +188,22 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
                 count++;
         }
         return count;
+    }
+
+    @Override
+    public void onResponse(Response response) {
+        try {
+            AppDialogs.hideProgressDialog();
+            if (response != null) {
+                if (response.requestType == AppServices.API.bookDetails.hashCode()) {
+                    if (response.isSuccess()) {
+                        mDetails = ((Seat) response).details;
+                        initDetails(mDetails);
+                    } else AppDialogs.okAction(mContext, response.message);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

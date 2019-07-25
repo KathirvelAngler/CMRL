@@ -1,5 +1,6 @@
 package com.cmrl.customer.helper;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
@@ -33,7 +34,7 @@ public class ImageLoader {
      * @param aDefaultImage int
      * @param aErrorImage   int
      */
-    public static void loadImage(FragmentActivity aContext, final ImageView aImageView, String aImageUrlStr, int aDefaultImage, int aErrorImage) {
+    public static void loadImage(Context aContext, final ImageView aImageView, String aImageUrlStr, int aDefaultImage, int aErrorImage) {
         try {
             com.nostra13.universalimageloader.core.ImageLoader imageLoader = com.nostra13.universalimageloader.core.ImageLoader.getInstance();
             imageLoader.init(ImageLoaderConfiguration.createDefault(aContext));

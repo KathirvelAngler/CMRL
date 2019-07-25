@@ -9,6 +9,7 @@ import com.cmrl.customer.http.JsonRestClient;
 import com.cmrl.customer.http.ResponseListener;
 import com.cmrl.customer.http.RestClient;
 import com.cmrl.customer.model.Routes;
+import com.cmrl.customer.model.Seat;
 import com.cmrl.customer.model.Stops;
 
 import org.json.JSONObject;
@@ -34,6 +35,7 @@ public class AppServices {
         String stations = "stations";
         String routes = "routes";
         String routestop = "routestop";
+        String bookDetails = "getslot";
 
     }
 
@@ -81,6 +83,20 @@ public class AppServices {
             RestClient client = new RestClient(aContext, Request.Method.GET,
                     url, API.routestop.hashCode());
             client.execute(listener, Routes.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void getBookDetails(Context aContext, int id) {
+        try {
+            // Generating Req
+            String url = String.format("%s/%s", constructUrl(API.bookDetails), id);
+
+            RestClient client = new RestClient(aContext, Request.Method.GET,
+                    url, API.bookDetails.hashCode());
+            client.execute((ResponseListener) aContext, Seat.class);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -112,21 +112,21 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
         if (checkInternet()) {
             AppDialogs.showProgressDialog(mContext);
             AppServices.searchRoutes(mContext, 1, 5);
-        }
+        } else AppDialogs.okAction(mContext, getString(R.string.no_internet));
     }
 
     private void getStops() {
         if (checkInternet()) {
             AppDialogs.showProgressDialog(mContext);
             AppServices.getStops(mContext);
-        }
+        } else AppDialogs.okAction(mContext, getString(R.string.no_internet));
     }
 
     private void getStations() {
         if (checkInternet()) {
             AppDialogs.showProgressDialog(mContext);
             AppServices.getStations(mContext);
-        }
+        } else AppDialogs.okAction(mContext, getString(R.string.no_internet));
     }
 
     @Override

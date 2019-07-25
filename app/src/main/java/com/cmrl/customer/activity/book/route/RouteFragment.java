@@ -170,7 +170,15 @@ public class RouteFragment extends BaseFragment implements RouteAdapter.Callback
 
     @Override
     public void select(int aPosition) {
-        startActivity(new Intent(mContext, BookingActivity.class));
+        try {
+            if (checkInternet()) {
+                Intent intent = new Intent(mContext, BookingActivity.class);
+                intent.putExtra("id", mRouteData.get(aPosition).id);
+                startActivity(intent);
+            } else AppDialogs.okAction(mContext, getString(R.string.no_internet));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

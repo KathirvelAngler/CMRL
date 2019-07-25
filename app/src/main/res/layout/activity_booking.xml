@@ -27,10 +27,10 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/activity_book_date"
                     style="@style/SubTitleSmall"
                     android:layout_width="match_parent"
                     android:gravity="center_vertical"
-                    android:text="15 Jul, 2019"
                     android:textColor="@color/app_blue"
                     android:textStyle="bold" />
 
@@ -47,11 +47,11 @@
                         android:src="@drawable/ic_book_cab" />
 
                     <TextView
+                        android:id="@+id/activity_book_cab"
                         style="@style/SubTitle"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="TN 65 AB 2306"
                         android:textColor="@color/app_gray"
                         android:textStyle="bold" />
 
@@ -68,13 +68,13 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/activity_book_seat"
                                 style="@style/SubTitle"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="end"
                                 android:padding="2dp"
-                                android:text="4"
                                 android:textColor="@color/app_blue"
                                 android:textSize="24sp"
                                 android:textStyle="bold" />
@@ -101,10 +101,11 @@
                 </LinearLayout>
 
                 <ImageView
+                    android:id="@+id/activity_book_map"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ic_map_static" />
+                    android:src="@drawable/bg_booking" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -122,23 +123,23 @@
                         android:tint="@color/app_green" />
 
                     <TextView
+                        android:id="@+id/activity_book_from"
                         style="@style/SubTitleSmall"
                         android:layout_width="0dp"
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="Koyambedu Metro Station"
                         android:textColor="@color/app_light_blue"
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/activity_book_to"
                         style="@style/SubTitleSmall"
                         android:layout_width="0dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
                         android:gravity="center_vertical|end"
-                        android:text="Rail Nagar"
                         android:textColor="@color/app_light_blue"
                         android:textStyle="bold" />
 
