@@ -86,8 +86,7 @@ public class RouteFragment extends BaseFragment implements RouteAdapter.Callback
 
     private void loadData() {
         if (checkInternet()) {
-            AppServices.getRoutes(mContext, this, 3);
-//            AppServices.getRoutes(mContext, mRoutes.routeId);
+            AppServices.getRoutes(mContext, this, mRoutes.dropStopId);
         }
     }
 
@@ -109,17 +108,16 @@ public class RouteFragment extends BaseFragment implements RouteAdapter.Callback
     private void initData(ArrayList<Routes> routes) {
         mRouteData.clear();
 
-        // Adding Items
         for (int i = 0; i < routes.size(); i++) {
-            mRouteData.addAll(routes.get(i).routeSlots);
-        }
-
-        // Adding Sticky Header
-        for (int x = 0; x < routes.size(); x++) {
-            if (routes.get(x).routeSlots.size() != 0)
-                for (int i = 0; i < mRouteData.size(); i++) {
-                    mRouteData.get(i).subId = routes.get(x).routeName;
+            if (routes.get(i).routeSlots.size() != 0) {
+                // Adding Sticky Header
+                ArrayList<Routes> slots = routes.get(i).routeSlots;
+                for (int x = 0; x < slots.size(); x++) {
+                    slots.get(x).subId = routes.get(i).routeName;
                 }
+                // Adding Items
+                mRouteData.addAll(slots);
+            }
         }
 
         mSwipe.setRefreshing(false);
@@ -181,10 +179,10 @@ public class RouteFragment extends BaseFragment implements RouteAdapter.Callback
         mSwipe.setRefreshing(false);
         try {
             if (response != null) {
-                if (response.requestType == AppServices.API.routes.hashCode()) {
+                if (response.requestType == AppServices.API.routestop.hashCode()) {
                     if (response.isSuccess()) {
                         Routes routes = ((Routes) response);
-                        initData(routes.data.get(0).routeSlots);
+                        initData(routes.data.get(0).routes);
                     } else AppDialogs.okAction(mContext, response.message);
                 }
             }

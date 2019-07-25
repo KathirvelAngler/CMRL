@@ -33,6 +33,7 @@ public class AppServices {
         String stops = "stops";
         String stations = "stations";
         String routes = "routes";
+        String routestop = "routestop";
 
     }
 
@@ -75,10 +76,10 @@ public class AppServices {
     public static void getRoutes(Context aContext, ResponseListener listener, int id) {
         try {
             // Generating Req
-            String url = String.format("%s/%s", constructUrl(API.routes), id);
+            String url = String.format("%s/%s", constructUrl(API.routestop), id);
 
             RestClient client = new RestClient(aContext, Request.Method.GET,
-                    url, API.routes.hashCode());
+                    url, API.routestop.hashCode());
             client.execute(listener, Routes.class);
         } catch (Exception e) {
             e.printStackTrace();
