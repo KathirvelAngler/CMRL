@@ -63,6 +63,7 @@
                     android:tag="-1" />
 
                 <ImageView
+                    android:id="@+id/activity_book_current_location"
                     style="@style/BackButton"
                     android:layout_marginLeft="5dp"
                     android:padding="2dp"

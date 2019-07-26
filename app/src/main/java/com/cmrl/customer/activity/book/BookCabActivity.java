@@ -3,11 +3,12 @@ package com.cmrl.customer.activity.book;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ajithvgiri.searchdialog.OnSearchItemSelected;
 import com.ajithvgiri.searchdialog.SearchListItem;
@@ -21,6 +22,10 @@ import com.cmrl.customer.http.Response;
 import com.cmrl.customer.http.ResponseListener;
 import com.cmrl.customer.model.Routes;
 import com.cmrl.customer.model.Stops;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -35,7 +40,8 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
     Context mContext;
     ArrayList<SearchListItem> mData;
     TextView mPickLocation, mDropLocation;
-    ImageView mBack;
+    ImageView mBack, mCurrentLocation;
+    int PLACE_PICKER_REQUEST = 99;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,7 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
         mSearchCab = findViewById(R.id.activity_book_search_cab);
         mPickLocation = findViewById(R.id.activity_book_pick_location);
         mDropLocation = findViewById(R.id.activity_book_drop_location);
+        mCurrentLocation = findViewById(R.id.activity_book_current_location);
 
         clickListener();
     }
@@ -87,6 +94,7 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
         mSearchCab.setOnClickListener(this);
         mPickLocation.setOnClickListener(this);
         mDropLocation.setOnClickListener(this);
+        mCurrentLocation.setOnClickListener(this);
         mBack.setOnClickListener(this);
         return true;
     }
@@ -103,11 +111,25 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
             case R.id.activity_book_drop_location:
                 getStops();
                 break;
+            case R.id.activity_book_current_location:
+//                initPlacePicker();
+                break;
             case R.id.activity_book_search_cab:
                 validate();
                 break;
         }
 
+    }
+
+    private void initPlacePicker() {
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        try {
+            startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
     }
 
     private void validate() {
@@ -182,6 +204,19 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    Place place = PlacePicker.getPlace(mContext, data);
+                    String toastMsg = String.format("Place: %s", place.getName());
+                    Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                } else AppDialogs.okAction(mContext, "Failed to get current location!");
+            }
         }
     }
 }

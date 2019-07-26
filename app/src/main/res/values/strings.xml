@@ -5,8 +5,8 @@
     <string name="your_rides">Your Rides</string>
     <string name="trip_details">Trip Details</string>
     <string name="book_confirm">Booking Confirmation</string>
-    <string name="drop_home">Drop me at Home</string>
-    <string name="drop_metro">Drop me at Metro</string>
+    <string name="drop_home">Drop at Home</string>
+    <string name="drop_metro">Drop at Metro</string>
     <string name="pick_up_location">Pick Up\nLocation</string>
     <string name="drop_location">Drop\nLocation</string>
     <string name="search">search</string>

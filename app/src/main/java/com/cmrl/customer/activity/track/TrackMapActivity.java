@@ -119,7 +119,7 @@ public class TrackMapActivity extends BaseActivity implements View.OnClickListen
     protected void onResume() {
         super.onResume();
         initHeader();
-        initPlacePicker();
+//        initPlacePicker();
     }
 
     @Override

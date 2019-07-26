@@ -99,7 +99,7 @@ public class HomeFragment extends BaseFragment implements HomeAdapter.Callback {
                 startActivity(new Intent(mContext, BookCabActivity.class));
                 break;
             case 1:
-                startActivity(new Intent(mContext, TrackCabActivity.class));
+//                startActivity(new Intent(mContext, TrackCabActivity.class));
                 break;
         }
     }
