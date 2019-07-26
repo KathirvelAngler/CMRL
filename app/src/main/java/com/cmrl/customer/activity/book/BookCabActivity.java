@@ -3,6 +3,7 @@ package com.cmrl.customer.activity.book;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -59,6 +60,7 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onClick(int i, SearchListItem searchListItem) {
                 view.setText(searchListItem.getTitle());
+                view.setTag(searchListItem.getId());
             }
         });
     }
@@ -102,16 +104,25 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
                 getStops();
                 break;
             case R.id.activity_book_search_cab:
-                searchRoutes();
+                validate();
                 break;
         }
 
     }
 
+    private void validate() {
+        if (mPickLocation.getTag().equals("-1")) {
+            AppDialogs.okAction(mContext, "Pick location should not be empty");
+        } else if (mDropLocation.getTag().equals("-1")) {
+            AppDialogs.okAction(mContext, "Drop location should not be empty");
+        } else searchRoutes();
+    }
+
     private void searchRoutes() {
         if (checkInternet()) {
             AppDialogs.showProgressDialog(mContext);
-            AppServices.searchRoutes(mContext, 1, 5);
+            AppServices.searchRoutes(mContext, mPickLocation.getTag().toString(),
+                    mDropLocation.getTag().toString());
         } else AppDialogs.okAction(mContext, getString(R.string.no_internet));
     }
 
@@ -140,10 +151,10 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
                         if (stops.data.size() > 0) {
                             mData = new ArrayList<>();
                             for (int i = 0; i < stops.data.size(); i++) {
-                                SearchListItem data = new SearchListItem(i, stops.data.get(i).name);
+                                SearchListItem data = new SearchListItem(stops.data.get(i).id, stops.data.get(i).name);
                                 mData.add(data);
                             }
-                            initDialog("Pick", mData, mPickLocation);
+                            initDialog("Choose Pick Location", mData, mPickLocation);
                         }
                     } else AppDialogs.okAction(mContext, response.message);
                 } else if (response.requestType == AppServices.API.stops.hashCode()) {
@@ -152,10 +163,10 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
                         if (stops.data.size() > 0) {
                             mData = new ArrayList<>();
                             for (int i = 0; i < stops.data.size(); i++) {
-                                SearchListItem data = new SearchListItem(i, stops.data.get(i).name);
+                                SearchListItem data = new SearchListItem(stops.data.get(i).id, stops.data.get(i).stopName);
                                 mData.add(data);
                             }
-                            initDialog("Drop", mData, mDropLocation);
+                            initDialog("Choose Drop Location", mData, mDropLocation);
                         }
                     } else AppDialogs.okAction(mContext, response.message);
                 } else if (response.requestType == AppServices.API.routes.hashCode()) {

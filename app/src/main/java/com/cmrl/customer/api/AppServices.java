@@ -61,7 +61,7 @@ public class AppServices {
         }
     }
 
-    public static void searchRoutes(Context aContext, int pickId, int stopId) {
+    public static void searchRoutes(Context aContext, String pickId, String stopId) {
         try {
             // Generating Req
             JsonRestClient client = new JsonRestClient(aContext, Request.Method.POST,

@@ -17,9 +17,12 @@ public class Stops extends Response {
     public ArrayList<Stops> data = new ArrayList<>();
 
     @SerializedName("id")
-    public int id = 0;
+    public int id;
 
     @SerializedName("name")
     public String name = "";
+
+    @SerializedName("stopName")
+    public String stopName = "";
 
 }
