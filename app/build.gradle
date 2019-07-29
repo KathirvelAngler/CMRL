@@ -19,6 +19,18 @@ android {
             signingConfig signingConfigs.debug
         }
 
+        staging  {
+            debuggable true
+            minifyEnabled true
+            shrinkResources true
+
+            buildConfigField "String", "API_URL", '"https://devcmrlcapi.megacabs.com"'
+            resValue "string", "MAP_KEY", "AIzaSyD809SXzKBHE2dVmAaxW6uelc-p-N8V6po"
+
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+
         debug {
             debuggable true
             minifyEnabled true
