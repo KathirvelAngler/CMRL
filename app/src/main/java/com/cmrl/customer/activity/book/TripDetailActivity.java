@@ -110,7 +110,7 @@ public class TripDetailActivity extends BaseActivity implements View.OnClickList
                 onBackPressed();
                 break;
             case R.id.activity_trip_invoice:
-                startActivity(new Intent(mContext, RideHistoryActivity.class));
+//                startActivity(new Intent(mContext, RideHistoryActivity.class));
                 break;
             case R.id.activity_trip_support:
                 startActivity(new Intent(mContext, ConfirmationActivity.class));

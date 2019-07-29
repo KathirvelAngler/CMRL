@@ -17,8 +17,9 @@ import android.view.ViewGroup;
 
 import com.cmrl.customer.R;
 import com.cmrl.customer.activity.book.BookCabActivity;
-import com.cmrl.customer.activity.track.TrackCabActivity;
+import com.cmrl.customer.activity.book.RideHistoryActivity;
 import com.cmrl.customer.base.BaseFragment;
+import com.cmrl.customer.helper.AppDialogs;
 
 import java.util.ArrayList;
 
@@ -99,7 +100,16 @@ public class HomeFragment extends BaseFragment implements HomeAdapter.Callback {
                 startActivity(new Intent(mContext, BookCabActivity.class));
                 break;
             case 1:
+                AppDialogs.okAction(mContext, "NYI");
 //                startActivity(new Intent(mContext, TrackCabActivity.class));
+                break;
+
+            case 2:
+                startActivity(new Intent(mContext, RideHistoryActivity.class));
+                break;
+
+            case 3:
+                AppDialogs.okAction(mContext, "NYI");
                 break;
         }
     }

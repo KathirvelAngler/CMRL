@@ -46,7 +46,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ItemViewHold
         holder.mCabNumber.setText(routes.cabNumber);
         holder.mTime.setText(routes.scheduleSlot);
         holder.mSeat.setText(String.valueOf(routes.availableSeats));
-        holder.mDistance.setText(String.valueOf(routes.distance));
+        holder.mRoute.setText(String.valueOf(routes.routeCode));
 
         holder.mItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +65,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ItemViewHold
     class ItemViewHolder extends RecyclerView.ViewHolder {
 
         LinearLayout mItem;
-        TextView mCabNumber, mTime, mSeat, mDistance;
+        TextView mCabNumber, mTime, mSeat, mRoute;
 
         ItemViewHolder(View aView) {
             super(aView);
@@ -74,7 +74,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ItemViewHold
             mCabNumber = aView.findViewById(R.id.inflate_route_cab_number);
             mTime = aView.findViewById(R.id.inflate_route_cab_time);
             mSeat = aView.findViewById(R.id.inflate_route_cab_seat);
-            mDistance = aView.findViewById(R.id.inflate_route_cab_distance);
+            mRoute = aView.findViewById(R.id.inflate_route_cab_route);
         }
 
 
