@@ -27,4 +27,5 @@
     <string name="available_routes">Available Routes</string>
     <string name="track">Track</string>
     <string name="no_internet">No Internet Connection!</string>
+    <string name="location_failed">Oops! Location fetching failed!</string>
 </resources>

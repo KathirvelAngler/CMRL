@@ -36,6 +36,7 @@
             </RelativeLayout>
 
             <lib.kingja.switchbutton.SwitchMultiButton
+                android:id="@+id/activity_book_switch"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 app:disableColor="@color/app_blue"

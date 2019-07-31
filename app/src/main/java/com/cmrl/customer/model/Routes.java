@@ -15,11 +15,15 @@ public class Routes extends Response {
     @SerializedName("data")
     public ArrayList<Routes> data = new ArrayList<>();
 
-    @SerializedName("dropStopName")
-    public String dropStopName = "";
+    @SerializedName("pickupStopName")
+    public String stopName = "";
 
-    @SerializedName("dropStopId")
-    public int dropStopId;
+    @SerializedName("pickupStopId")
+    public int stopId;
+    public int pickId;
+
+    @SerializedName("duration")
+    public String duration = "";
 
     @SerializedName("route")
     public ArrayList<Routes> routes = new ArrayList<>();
@@ -52,8 +56,5 @@ public class Routes extends Response {
 
     @SerializedName("availableSeats")
     public int availableSeats;
-
-    @SerializedName("distance")
-    public int distance;
 
 }

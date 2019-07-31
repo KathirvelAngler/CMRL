@@ -1,8 +1,10 @@
 package com.cmrl.customer.helper
 
+import android.Manifest
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.location.Location
 import android.net.Uri
 import android.provider.Settings
 import android.support.v4.content.ContextCompat
@@ -16,7 +18,13 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.cmrl.customer.R
+import com.cmrl.customer.utils.PermissionChecker
 import com.cmrl.customer.utils.SingleChoiceAdapter
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Created by Mathan on 12/07/19.
@@ -25,6 +33,7 @@ import com.cmrl.customer.utils.SingleChoiceAdapter
 object AppHelper {
 
     private var selection_dialog: Dialog? = null
+    internal var mPermissions = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
 
 
     /**
@@ -123,6 +132,39 @@ object AppHelper {
                 getColor(context, R.color.app_light_blue),
                 getColor(context, R.color.app_gray)
         )
+    }
+
+    /**
+     * @param aSelectedDate     String
+     * @param aCurrentFormat    String
+     * @param aConversionFormat String
+     * @return String
+     */
+    fun convertDateFormat(aSelectedDate: String, aCurrentFormat: String, aConversionFormat: String): String {
+        var aDate = ""
+        try {
+            if (aSelectedDate.isEmpty())
+                return ""
+            val d = SimpleDateFormat(aCurrentFormat, Locale.ENGLISH).parse(aSelectedDate)
+            aDate = SimpleDateFormat(aConversionFormat, Locale.ENGLISH).format(d.time)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return aDate
+    }
+
+    fun getCurrentLocation(context: Context, successListener: OnSuccessListener<Location>, failureListener: OnFailureListener) {
+        try {
+            val mFusedClient = LocationServices.getFusedLocationProviderClient(context)
+
+            if (PermissionChecker().checkAllPermission(context, mPermissions)) {
+                AppDialogs.showProgressDialog(context)
+                mFusedClient.lastLocation.addOnSuccessListener(successListener)
+                mFusedClient.lastLocation.addOnFailureListener(failureListener)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
 }

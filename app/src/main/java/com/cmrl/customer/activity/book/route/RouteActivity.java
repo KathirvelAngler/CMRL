@@ -25,7 +25,7 @@ import com.google.gson.JsonSyntaxException;
 public class RouteActivity extends FragmentActivity implements View.OnClickListener {
 
     ImageView mBack, mLeftArrow, mRightArrow;
-    TextView mRouteTitle;
+    TextView mRouteTitle, mDistance;
     Context mContext;
     View mView;
     ViewPager mViewPager;
@@ -45,6 +45,7 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
         mLeftArrow = findViewById(R.id.activity_route_left_arrow);
         mRightArrow = findViewById(R.id.activity_route_right_arrow);
         mRouteTitle = findViewById(R.id.activity_route_header);
+        mDistance = findViewById(R.id.inflate_route_cab_distance);
 
         initHeader();
 
@@ -92,7 +93,10 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
     }
 
     private void initArrow(int i) {
-        mRouteTitle.setText(mRoutes.data.get(i).dropStopName);
+        mRouteTitle.setText(mRoutes.data.get(i).stopName);
+        mDistance.setText(mRoutes.data.get(i).duration);
+        if (mRoutes.data.get(i).duration.equals("NA"))
+            mDistance.setVisibility(View.GONE);
         mLeftArrow.setVisibility(View.VISIBLE);
         mRightArrow.setVisibility(View.VISIBLE);
         if (i == 0)
@@ -112,7 +116,7 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
 
         @Override
         public Fragment getItem(int position) {
-            return new RouteFragment(aRoutes.data.get(position));
+            return new RouteFragment(mRoutes.pickId, mRoutes.stopId, aRoutes.data.get(position));
         }
 
         @Override

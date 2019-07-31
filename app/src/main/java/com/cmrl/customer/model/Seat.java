@@ -45,4 +45,7 @@ public class Seat extends Response {
 
     @SerializedName("fare")
     public double fare;
+
+    @SerializedName("dateTime")
+    public String dateTime = "";
 }

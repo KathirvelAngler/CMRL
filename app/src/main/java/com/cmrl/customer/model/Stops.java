@@ -19,9 +19,6 @@ public class Stops extends Response {
     @SerializedName("id")
     public int id;
 
-    @SerializedName("name")
-    public String name = "";
-
     @SerializedName("stopName")
     public String stopName = "";
 

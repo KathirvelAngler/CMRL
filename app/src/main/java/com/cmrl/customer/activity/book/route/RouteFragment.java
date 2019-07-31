@@ -40,9 +40,12 @@ public class RouteFragment extends BaseFragment implements RouteAdapter.Callback
     Context mContext;
     View mView;
     Routes mRoutes;
+    int startId, stopId;
 
-    public RouteFragment(Routes routes) {
+    public RouteFragment(int start, int stop, Routes routes) {
         this.mRoutes = routes;
+        this.startId = start;
+        this.stopId = stop;
     }
 
 
@@ -86,7 +89,7 @@ public class RouteFragment extends BaseFragment implements RouteAdapter.Callback
 
     private void loadData() {
         if (checkInternet()) {
-            AppServices.getRoutes(mContext, this, mRoutes.dropStopId);
+            AppServices.getRoutes(mContext, this, mRoutes.stopId);
         }
     }
 
@@ -173,7 +176,9 @@ public class RouteFragment extends BaseFragment implements RouteAdapter.Callback
         try {
             if (checkInternet()) {
                 Intent intent = new Intent(mContext, BookingActivity.class);
-                intent.putExtra("id", mRouteData.get(aPosition).id);
+                intent.putExtra("route_id", mRouteData.get(aPosition).id);
+                intent.putExtra("pick_id", startId);
+                intent.putExtra("drop_id", stopId);
                 startActivity(intent);
             } else AppDialogs.okAction(mContext, getString(R.string.no_internet));
         } catch (Exception e) {

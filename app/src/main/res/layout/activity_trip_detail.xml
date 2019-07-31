@@ -37,6 +37,7 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/activity_trip_map"
                             android:layout_width="match_parent"
                             android:layout_height="200dp"
                             android:scaleType="fitXY"
@@ -63,12 +64,12 @@
                                 android:tint="@color/app_green" />
 
                             <TextView
+                                android:id="@+id/activity_trip_pickup_location"
                                 style="@style/SubTitle"
                                 android:layout_width="0dp"
                                 android:layout_marginLeft="5dp"
                                 android:layout_weight="1"
                                 android:gravity="center_vertical"
-                                android:text="4:31 AM - Ashok Nagar"
                                 android:textColor="@color/app_black" />
 
                         </LinearLayout>
@@ -88,12 +89,12 @@
                                 android:tint="@color/app_red" />
 
                             <TextView
+                                android:id="@+id/activity_trip_drop_location"
                                 style="@style/SubTitle"
                                 android:layout_width="0dp"
                                 android:layout_marginLeft="5dp"
                                 android:layout_weight="1"
                                 android:gravity="center_vertical"
-                                android:text="4:41 AM - Thousand Lights"
                                 android:textColor="@color/app_black" />
 
                         </LinearLayout>
@@ -128,10 +129,10 @@
                                 android:tint="@color/app_gray" />
 
                             <TextView
+                                android:id="@+id/activity_trip_payment"
                                 style="@style/SubTitle"
                                 android:layout_width="wrap_content"
                                 android:gravity="center_vertical"
-                                android:text="Credit Card"
                                 android:textColor="@color/app_black" />
 
                         </LinearLayout>
@@ -186,7 +187,8 @@
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <ImageView
                             android:layout_width="25dp"

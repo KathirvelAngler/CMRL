@@ -17,6 +17,7 @@ import com.cmrl.customer.activity.book.adapter.BookSeatAdapter;
 import com.cmrl.customer.api.AppServices;
 import com.cmrl.customer.base.BaseActivity;
 import com.cmrl.customer.helper.AppDialogs;
+import com.cmrl.customer.helper.AppHelper;
 import com.cmrl.customer.helper.ImageLoader;
 import com.cmrl.customer.http.Response;
 import com.cmrl.customer.http.ResponseListener;
@@ -26,6 +27,8 @@ import java.util.ArrayList;
 
 import static com.cmrl.customer.preference.CMRLConstants.AVAILABLE;
 import static com.cmrl.customer.preference.CMRLConstants.BOOKED;
+import static com.cmrl.customer.preference.CMRLConstants.DD_MMM_YY_HH_MM;
+import static com.cmrl.customer.preference.CMRLConstants.DD_MM_YY_ZONE;
 import static com.cmrl.customer.preference.CMRLConstants.IND_RUPEE;
 import static com.cmrl.customer.preference.CMRLConstants.SELECTED;
 
@@ -76,16 +79,17 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
     public boolean initBundle() {
         Intent intent = getIntent();
         if (intent != null) {
-            int id = intent.getExtras().getInt("id");
-            getDetails(id);
+            getDetails(intent.getExtras().getInt("pick_id"),
+                    intent.getExtras().getInt("drop_id"),
+                    intent.getExtras().getInt("route_id"));
         }
         return true;
     }
 
-    private void getDetails(int id) {
+    private void getDetails(int pickId, int dropId, int routeId) {
         if (checkInternet()) {
             AppDialogs.showProgressDialog(mContext);
-            AppServices.getBookDetails(mContext, id);
+            AppServices.getBookDetails(mContext, pickId, dropId, routeId);
         } else AppDialogs.okAction(mContext, getString(R.string.no_internet));
     }
 
@@ -102,7 +106,7 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
         mAvailable = mDetails.availableSeats;
         mPrice = mDetails.fare;
 
-        mBookDate.setText("25 July,2019");
+        mBookDate.setText(AppHelper.INSTANCE.convertDateFormat(mDetails.dateTime, DD_MM_YY_ZONE, DD_MMM_YY_HH_MM));
         mBookCab.setText(mDetails.cabNumber);
         mBookNoSeat.setText(String.valueOf(mDetails.availableSeats));
         mBookFrom.setText(mDetails.firstStopName);

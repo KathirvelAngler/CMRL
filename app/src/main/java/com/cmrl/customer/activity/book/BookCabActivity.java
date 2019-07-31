@@ -1,8 +1,11 @@
 package com.cmrl.customer.activity.book;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
@@ -18,17 +21,23 @@ import com.cmrl.customer.activity.book.route.RouteActivity;
 import com.cmrl.customer.api.AppServices;
 import com.cmrl.customer.base.BaseActivity;
 import com.cmrl.customer.helper.AppDialogs;
+import com.cmrl.customer.helper.AppHelper;
 import com.cmrl.customer.http.Response;
 import com.cmrl.customer.http.ResponseListener;
 import com.cmrl.customer.model.Routes;
 import com.cmrl.customer.model.Stops;
+import com.cmrl.customer.utils.PermissionChecker;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+
+import lib.kingja.switchbutton.SwitchMultiButton;
 
 /**
  * Created by Mathan on 12-07-2019.
@@ -42,6 +51,11 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
     TextView mPickLocation, mDropLocation;
     ImageView mBack, mCurrentLocation;
     int PLACE_PICKER_REQUEST = 99;
+    SwitchMultiButton mSwitch;
+    boolean isDropMetro = true;
+
+    String[] mPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+    PermissionChecker mChecker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +63,17 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
         setContentView(R.layout.activity_book_cab);
 
         mContext = this;
+        mChecker = new PermissionChecker();
         mBack = findViewById(R.id.header_app_back);
+
+        mSwitch = findViewById(R.id.activity_book_switch);
 
         mSearchCab = findViewById(R.id.activity_book_search_cab);
         mPickLocation = findViewById(R.id.activity_book_pick_location);
         mDropLocation = findViewById(R.id.activity_book_drop_location);
         mCurrentLocation = findViewById(R.id.activity_book_current_location);
+
+        mChecker.askAllPermissions(mContext, mPermissions);
 
         clickListener();
     }
@@ -96,7 +115,25 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
         mDropLocation.setOnClickListener(this);
         mCurrentLocation.setOnClickListener(this);
         mBack.setOnClickListener(this);
+
+        mSwitch.setOnSwitchListener(new SwitchMultiButton.OnSwitchListener() {
+            @Override
+            public void onSwitch(int position, String tabText) {
+                reset(mPickLocation);
+                reset(mDropLocation);
+                isDropMetro = position == 0;
+                if (position == 0)
+                    mCurrentLocation.setVisibility(View.VISIBLE);
+                else mCurrentLocation.setVisibility(View.INVISIBLE);
+            }
+        });
+
         return true;
+    }
+
+    private void reset(TextView view) {
+        view.setText(null);
+        view.setTag(String.valueOf(-1));
     }
 
     @Override
@@ -106,10 +143,14 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
                 onBackPressed();
                 break;
             case R.id.activity_book_pick_location:
-                getStations();
+                if (isDropMetro)
+                    getStops();
+                else getStations();
                 break;
             case R.id.activity_book_drop_location:
-                getStops();
+                if (isDropMetro)
+                    getStations();
+                else getStops();
                 break;
             case R.id.activity_book_current_location:
 //                initPlacePicker();
@@ -137,16 +178,37 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
             AppDialogs.okAction(mContext, "Pick location should not be empty");
         } else if (mDropLocation.getTag().equals("-1")) {
             AppDialogs.okAction(mContext, "Drop location should not be empty");
-        } else searchRoutes();
+        } else getCurrentLocation();
     }
 
-    private void searchRoutes() {
+    private void getCurrentLocation() {
+        AppHelper.INSTANCE.getCurrentLocation(mContext, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                AppDialogs.hideProgressDialog();
+                if (location != null)
+                    searchRoutes(location);
+            }
+        }, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                AppDialogs.hideProgressDialog();
+                AppDialogs.okAction(mContext, e.getMessage());
+            }
+        });
+    }
+
+    private void searchRoutes(Location location) {
         if (checkInternet()) {
             AppDialogs.showProgressDialog(mContext);
             AppServices.searchRoutes(mContext, mPickLocation.getTag().toString(),
-                    mDropLocation.getTag().toString());
+                    mDropLocation.getTag().toString(), location);
         } else AppDialogs.okAction(mContext, getString(R.string.no_internet));
     }
+
+    /**
+     * Get Pickup Stops
+     */
 
     private void getStops() {
         if (checkInternet()) {
@@ -155,6 +217,9 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
         } else AppDialogs.okAction(mContext, getString(R.string.no_internet));
     }
 
+    /**
+     * Get Metro Stations
+     */
     private void getStations() {
         if (checkInternet()) {
             AppDialogs.showProgressDialog(mContext);
@@ -173,10 +238,11 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
                         if (stops.data.size() > 0) {
                             mData = new ArrayList<>();
                             for (int i = 0; i < stops.data.size(); i++) {
-                                SearchListItem data = new SearchListItem(stops.data.get(i).id, stops.data.get(i).name);
+                                SearchListItem data = new SearchListItem(stops.data.get(i).id, stops.data.get(i).stopName);
                                 mData.add(data);
                             }
-                            initDialog("Choose Pick Location", mData, mPickLocation);
+                            String dialog = String.format("Choose %s Location", isDropMetro ? "Drop" : "Pick");
+                            initDialog(dialog, mData, isDropMetro ? mDropLocation : mPickLocation);
                         }
                     } else AppDialogs.okAction(mContext, response.message);
                 } else if (response.requestType == AppServices.API.stops.hashCode()) {
@@ -188,13 +254,16 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
                                 SearchListItem data = new SearchListItem(stops.data.get(i).id, stops.data.get(i).stopName);
                                 mData.add(data);
                             }
-                            initDialog("Choose Drop Location", mData, mDropLocation);
+                            String dialog = String.format("Choose %s Location", isDropMetro ? "Pick" : "Drop");
+                            initDialog(dialog, mData, isDropMetro ? mPickLocation : mDropLocation);
                         }
                     } else AppDialogs.okAction(mContext, response.message);
                 } else if (response.requestType == AppServices.API.routes.hashCode()) {
                     if (response.isSuccess()) {
                         Routes routes = ((Routes) response);
                         if (routes.data.size() > 0) {
+                            routes.pickId = Integer.parseInt(mPickLocation.getTag().toString());
+                            routes.stopId = Integer.parseInt(mDropLocation.getTag().toString());
                             Intent intent = new Intent(mContext, RouteActivity.class);
                             intent.putExtra("routes", new Gson().toJson(routes));
                             startActivity(intent);

@@ -6,15 +6,29 @@ package com.cmrl.customer.preference;
 
 public interface CMRLConstants {
 
-    public int BOOK_CAB = 0;
-    public static int TRACK_CAB = 1;
-    public static int HISTORY = 2;
-    public static int HELP = 3;
+    int BOOK_CAB = 0;
+    int TRACK_CAB = 1;
+    int HISTORY = 2;
+    int HELP = 3;
 
 
-    public static int BOOKED = -1;
-    public static int AVAILABLE = 0;
-    public static int SELECTED = 1;
+    int BOOKED = -1;
+    int AVAILABLE = 0;
+    int SELECTED = 1;
 
-    public static String IND_RUPEE = "\u20B9";
+    String IND_RUPEE = "\u20B9";
+
+    // Date/Time Formats
+
+    String DD_MM_YY = "dd-MM-yyyy"; // 06-12-1993
+    String YY_MM_DD = "yyyy-MM-dd"; // 1993-12-06
+    String YY_MM_DD_SLASH = "yyyy/MM/dd"; // 1993/12/06
+    String DD_MMM_YY = "dd MMM yyyy"; // 06 Dec 1993
+    String DD_MMM_YY_HH_MM = "dd MMM yyyy hh:mm aa"; // 06 Dec 1993 05:10 PM
+    String DD_MMM_yy_HH_MM = "dd MMM yy hh:mm aa"; // 06 Dec 93 05:10 PM
+    String DD_MM_YY_ZONE = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"; // 2019-07-29T17:45:08.629+05:30
+    String HH_MM = "HH:mm"; // 20:30
+    String HH_MM_AA = "hh:mm aa"; // 10:30 AM
+
+
 }
