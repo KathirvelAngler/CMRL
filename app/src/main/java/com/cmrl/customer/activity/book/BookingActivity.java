@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cmrl.customer.R;
 import com.cmrl.customer.activity.book.adapter.BookSeatAdapter;
@@ -76,14 +75,14 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
     }
 
     @Override
-    public boolean initBundle() {
-        Intent intent = getIntent();
+    public boolean initBundle() { Intent intent = getIntent();
         if (intent != null) {
             getDetails(intent.getExtras().getInt("pick_id"),
                     intent.getExtras().getInt("drop_id"),
                     intent.getExtras().getInt("route_id"));
         }
         return true;
+
     }
 
     private void getDetails(int pickId, int dropId, int routeId) {
@@ -176,8 +175,10 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.activity_seat_book:
-                Toast.makeText(mContext, String.valueOf(getTicketCount()), Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(mContext, TripDetailActivity.class));
+//                Toast.makeText(mContext, String.valueOf(getTicketCount()), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, TripDetailActivity.class);
+                intent.putExtra("trip_id", mDetails.tripId);
+                startActivity(intent);
                 break;
             case R.id.header_app_back:
                 onBackPressed();

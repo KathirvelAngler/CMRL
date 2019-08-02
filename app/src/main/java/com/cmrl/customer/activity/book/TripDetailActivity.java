@@ -14,23 +14,34 @@ import android.widget.TextView;
 
 import com.cmrl.customer.R;
 import com.cmrl.customer.activity.book.adapter.TripAdapter;
+import com.cmrl.customer.api.AppServices;
 import com.cmrl.customer.base.BaseActivity;
+import com.cmrl.customer.helper.AppDialogs;
+import com.cmrl.customer.helper.AppHelper;
+import com.cmrl.customer.helper.ImageLoader;
+import com.cmrl.customer.http.Response;
+import com.cmrl.customer.http.ResponseListener;
 import com.cmrl.customer.model.TripDetails;
 
 import java.util.ArrayList;
+
+import static com.cmrl.customer.preference.CMRLConstants.DD_MMM_yy_HH_MM;
+import static com.cmrl.customer.preference.CMRLConstants.DD_MM_YY_ZONE;
 
 /**
  * Created by Mathan on 15-07-2019.
  */
 
-public class TripDetailActivity extends BaseActivity implements View.OnClickListener {
+public class TripDetailActivity extends BaseActivity implements View.OnClickListener, ResponseListener {
 
     RecyclerView mTripRecycler;
     Context mContext;
-    ImageView mBack;
+    ImageView mBack, mRouteMap;
     TripAdapter mAdapter;
     ArrayList<TripDetails> mDetails = new ArrayList<>();
     LinearLayout mInvoice, mSupport;
+    TripDetails mTripDetails;
+    TextView mPick, mDrop, mPayment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +52,28 @@ public class TripDetailActivity extends BaseActivity implements View.OnClickList
 
         mTripRecycler = findViewById(R.id.activity_trip_recycler);
         mBack = findViewById(R.id.header_app_back);
+
+        mRouteMap = findViewById(R.id.activity_trip_map);
+
+        mPick = findViewById(R.id.activity_trip_pickup_location);
+        mDrop = findViewById(R.id.activity_trip_drop_location);
+        mPayment = findViewById(R.id.activity_trip_payment);
+
         mInvoice = findViewById(R.id.activity_trip_invoice);
         mSupport = findViewById(R.id.activity_trip_support);
 
         clickListener();
 
+        initBundle();
+
         initRecycler();
+    }
+
+    private void getDetails(int id) {
+        if (checkInternet()) {
+            AppDialogs.showProgressDialog(mContext);
+            AppServices.getTripDetails(mContext, id);
+        } else AppDialogs.okAction(mContext, getString(R.string.no_internet));
     }
 
     private void initRecycler() {
@@ -54,17 +81,15 @@ public class TripDetailActivity extends BaseActivity implements View.OnClickList
         mTripRecycler.setHasFixedSize(true);
         mAdapter = new TripAdapter(mContext, mDetails);
         mTripRecycler.setAdapter(mAdapter);
-
-        initDetails();
     }
 
-    private void initDetails() {
+    private void initDetails(TripDetails mTripDetails) {
         ArrayList<String> aDetails = new ArrayList<>();
-        aDetails.add("Mathan Kumar");
-        aDetails.add("60");
-        aDetails.add("Maruti Swift");
-        aDetails.add("2 Tickets");
-        aDetails.add("10 Mins / 2.1 KM");
+        aDetails.add(mTripDetails.customerName);
+        aDetails.add(String.valueOf(mTripDetails.fare));
+        aDetails.add(mTripDetails.cabNo);
+        aDetails.add(String.format("%s %s", mTripDetails.tickets, mTripDetails.tickets == 1 ? "Ticket" : "Tickets"));
+        aDetails.add(String.format("%s / %s", mTripDetails.traveledTime, mTripDetails.traveledDistance));
 
         @SuppressLint("Recycle") TypedArray icon = getResources().obtainTypedArray(R.array.trip_details_icon);
 
@@ -74,6 +99,18 @@ public class TripDetailActivity extends BaseActivity implements View.OnClickList
             details.detail = aDetails.get(i);
             mDetails.add(details);
         }
+
+        mPick.setText(String.format("%s - %s",
+                AppHelper.INSTANCE.convertDateFormat(mTripDetails.pickTime, DD_MM_YY_ZONE, DD_MMM_yy_HH_MM),
+                mTripDetails.pickLocation));
+        mDrop.setText(String.format("%s - %s",
+                AppHelper.INSTANCE.convertDateFormat(mTripDetails.dropTime, DD_MM_YY_ZONE, DD_MMM_yy_HH_MM),
+                mTripDetails.dropLocation));
+        mPayment.setText(mTripDetails.paymentMode);
+
+        if (!mTripDetails.routeUrl.isEmpty())
+            ImageLoader.loadImage(mContext, mRouteMap, mTripDetails.routeUrl,
+                    R.drawable.bg_booking, R.drawable.bg_booking);
 
         mAdapter.notifyDataSetChanged();
     }
@@ -86,7 +123,11 @@ public class TripDetailActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public boolean initBundle() {
-        return false;
+        Intent intent = getIntent();
+        if (intent != null) {
+            getDetails(intent.getExtras().getInt("trip_id"));
+        }
+        return true;
     }
 
     @Override
@@ -110,11 +151,28 @@ public class TripDetailActivity extends BaseActivity implements View.OnClickList
                 onBackPressed();
                 break;
             case R.id.activity_trip_invoice:
-//                startActivity(new Intent(mContext, RideHistoryActivity.class));
+
                 break;
             case R.id.activity_trip_support:
                 startActivity(new Intent(mContext, ConfirmationActivity.class));
                 break;
+        }
+    }
+
+    @Override
+    public void onResponse(Response response) {
+        try {
+            AppDialogs.hideProgressDialog();
+            if (response != null) {
+                if (response.requestType == AppServices.API.tripDetails.hashCode()) {
+                    if (response.isSuccess()) {
+                        mTripDetails = ((TripDetails) response).details;
+                        initDetails(mTripDetails);
+                    } else AppDialogs.okAction(mContext, response.message);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

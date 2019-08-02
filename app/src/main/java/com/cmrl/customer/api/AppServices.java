@@ -115,8 +115,9 @@ public class AppServices {
             JsonRestClient client = new JsonRestClient(aContext, Request.Method.POST,
                     constructUrl(API.tripDetails), API.tripDetails.hashCode());
             JSONObject object = new JSONObject();
-            object.put("customerId", "3434 3045 3437 7854");
-            object.put("tripId", 1);
+            object.put("customerId", "3434 3445 3432 7854");
+            // TODO Remove id
+            object.put("tripId", id != 0 ? id : 1);
             client.execute((ResponseListener) aContext, object, TripDetails.class);
         } catch (Exception e) {
             e.printStackTrace();
