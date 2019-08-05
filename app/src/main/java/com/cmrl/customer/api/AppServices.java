@@ -10,7 +10,7 @@ import com.cmrl.customer.http.JsonRestClient;
 import com.cmrl.customer.http.ResponseListener;
 import com.cmrl.customer.http.RestClient;
 import com.cmrl.customer.model.Routes;
-import com.cmrl.customer.model.Seat;
+import com.cmrl.customer.model.Booking;
 import com.cmrl.customer.model.Stops;
 import com.cmrl.customer.model.TripDetails;
 
@@ -39,6 +39,7 @@ public class AppServices {
         String routestop = "routestop";
         String bookDetails = "getslot";
         String tripDetails = "tripdetails";
+        String bookTicket = "book";
 
     }
 
@@ -103,7 +104,7 @@ public class AppServices {
             object.put("routeSlotId", routeId);
             object.put("pickUpStopId", pickId);
             object.put("dropStopId", dropId);
-            client.execute((ResponseListener) aContext, object, Seat.class);
+            client.execute((ResponseListener) aContext, object, Booking.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -119,6 +120,39 @@ public class AppServices {
             // TODO Remove id
             object.put("tripId", id != 0 ? id : 1);
             client.execute((ResponseListener) aContext, object, TripDetails.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void bookTicket(Context aContext, Booking details) {
+        try {
+            // Generating Req
+            JsonRestClient client = new JsonRestClient(aContext, Request.Method.POST,
+                    constructUrl(API.bookTicket), API.bookTicket.hashCode());
+            JSONObject object = new JSONObject();
+            object.put("tripId", details.tripId);
+            object.put("customerCardId", "123");
+            object.put("customerMobile", "1231231230");
+            object.put("customerName", "Mathan");
+            object.put("cabAssigned", details.cabNumber);
+            object.put("noOfSeats", details.totalTickets);
+            object.put("fare", details.totalTickets * details.fare);
+
+            object.put("pickupLat", details.pickup.lat);
+            object.put("pickupLng", details.pickup.lng);
+            object.put("pickUpLocation", details.pickup.location);
+            object.put("pickupStopId", details.pickup.stopId);
+
+            object.put("dropLat", details.drop.lat);
+            object.put("dropLng", details.drop.lng);
+            object.put("dropLocation", details.drop.location);
+            object.put("dropStopId", details.drop.stopId);
+
+            object.put("paymentMode", "Cash");
+            object.put("routeSlotId", details.routeId);
+
+            client.execute((ResponseListener) aContext, object, Booking.class);
         } catch (Exception e) {
             e.printStackTrace();
         }

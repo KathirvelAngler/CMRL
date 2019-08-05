@@ -11,7 +11,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import com.cmrl.customer.R;
-import com.cmrl.customer.model.Seat;
+import com.cmrl.customer.model.Booking;
 import com.cmrl.customer.preference.CMRLConstants;
 
 import java.util.ArrayList;
@@ -23,12 +23,12 @@ import java.util.ArrayList;
 public class BookSeatAdapter extends RecyclerView.Adapter<BookSeatAdapter.ViewHolder> implements CMRLConstants {
 
     private Context mContext;
-    private ArrayList<Seat> mSeats;
+    private ArrayList<Booking> mBookings;
     private Callback mCallback;
 
-    public BookSeatAdapter(Context aContext, ArrayList<Seat> aSeats, Callback callback) {
+    public BookSeatAdapter(Context aContext, ArrayList<Booking> aBookings, Callback callback) {
         mContext = aContext;
-        mSeats = aSeats;
+        mBookings = aBookings;
         mCallback = callback;
     }
 
@@ -41,10 +41,10 @@ public class BookSeatAdapter extends RecyclerView.Adapter<BookSeatAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
-        Seat seat = mSeats.get(position);
-        holder.mSeat.setEnabled(seat.available != BOOKED);
+        Booking booking = mBookings.get(position);
+        holder.mSeat.setEnabled(booking.available != BOOKED);
 
-        switch (seat.available) {
+        switch (booking.available) {
             case BOOKED:
                 holder.mSeat.setChecked(true);
                 break;
@@ -66,7 +66,7 @@ public class BookSeatAdapter extends RecyclerView.Adapter<BookSeatAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return mSeats.size();
+        return mBookings.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

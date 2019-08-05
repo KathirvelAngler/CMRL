@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by Mathan on 15-07-2019.
  */
 
-public class Seat extends Response {
+public class Booking extends Response {
     /**
      * -1 : Not Available
      * 0 : Available
@@ -17,10 +17,11 @@ public class Seat extends Response {
     public int available = 0;
 
     @SerializedName("data")
-    public Seat details;
+    public Booking details;
 
     @SerializedName("id")
     public int id;
+    public int routeId;
 
     @SerializedName("scheduleSlot")
     public String scheduleSlot = "";
@@ -39,6 +40,7 @@ public class Seat extends Response {
 
     @SerializedName("availableSeats")
     public int availableSeats;
+    public int totalTickets;
 
     @SerializedName("cabCapacity")
     public int cabCapacity;
@@ -51,4 +53,30 @@ public class Seat extends Response {
 
     @SerializedName("tripId")
     public int tripId;
+
+    @SerializedName("pickup")
+    public Booking pickup;
+
+    @SerializedName("drop")
+    public Booking drop;
+
+    @SerializedName("lat")
+    public double lat;
+
+    @SerializedName("lng")
+    public double lng;
+
+    @SerializedName("location")
+    public String location = "";
+
+    @SerializedName("stopId")
+    public int stopId;
+
+    // Ticket Booked
+
+    @SerializedName("bookingNo")
+    public String bookingNo = "";
+
+    @SerializedName("bookedDate")
+    public String bookedDate = "";
 }

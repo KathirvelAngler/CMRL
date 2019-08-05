@@ -176,3 +176,4 @@ public class TripDetailActivity extends BaseActivity implements View.OnClickList
         }
     }
 }
+

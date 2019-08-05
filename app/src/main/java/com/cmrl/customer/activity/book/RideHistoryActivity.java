@@ -89,6 +89,10 @@ public class RideHistoryActivity extends BaseActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.header_app_back:
                 onBackPressed();
+
+                /*Intent intent = new Intent(mContext, TripDetailActivity.class);
+                        intent.putExtra("trip_id", mDetails.tripId);
+                        startActivity(intent);*/
                 break;
         }
     }

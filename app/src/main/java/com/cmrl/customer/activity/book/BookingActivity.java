@@ -20,7 +20,8 @@ import com.cmrl.customer.helper.AppHelper;
 import com.cmrl.customer.helper.ImageLoader;
 import com.cmrl.customer.http.Response;
 import com.cmrl.customer.http.ResponseListener;
-import com.cmrl.customer.model.Seat;
+import com.cmrl.customer.model.Booking;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -40,14 +41,14 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
     RecyclerView mSeatSelection;
     Context mContext;
     BookSeatAdapter mAdapter;
-    ArrayList<Seat> mSeat = new ArrayList<>();
-    int mSpanCount = 8, maxSeats, mAvailable;
+    ArrayList<Booking> mBooking = new ArrayList<>();
+    int mSpanCount = 8, maxSeats, mAvailable, mRouteId;
     double mPrice = 0, mTotal = 0;
     LinearLayout mFareLayout;
     TextView mFare, mBookDate, mBookCab, mBookNoSeat, mBookFrom, mBookTo;
     Button mBookSeat;
     ImageView mBack, mBookMap;
-    Seat mDetails;
+    Booking mDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +76,8 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
     }
 
     @Override
-    public boolean initBundle() { Intent intent = getIntent();
+    public boolean initBundle() {
+        Intent intent = getIntent();
         if (intent != null) {
             getDetails(intent.getExtras().getInt("pick_id"),
                     intent.getExtras().getInt("drop_id"),
@@ -87,6 +89,7 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
 
     private void getDetails(int pickId, int dropId, int routeId) {
         if (checkInternet()) {
+            mRouteId = routeId;
             AppDialogs.showProgressDialog(mContext);
             AppServices.getBookDetails(mContext, pickId, dropId, routeId);
         } else AppDialogs.okAction(mContext, getString(R.string.no_internet));
@@ -94,13 +97,13 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
 
     private void initRecycler() {
         mSeatSelection.setLayoutManager(new GridLayoutManager(mContext,
-                mSeat.size() > mSpanCount ? mSpanCount : mSeat.size()));
+                mBooking.size() > mSpanCount ? mSpanCount : mBooking.size()));
         mSeatSelection.setHasFixedSize(true);
-        mAdapter = new BookSeatAdapter(mContext, mSeat, this);
+        mAdapter = new BookSeatAdapter(mContext, mBooking, this);
         mSeatSelection.setAdapter(mAdapter);
     }
 
-    private void initDetails(Seat mDetails) {
+    private void initDetails(Booking mDetails) {
         maxSeats = mDetails.cabCapacity;
         mAvailable = mDetails.availableSeats;
         mPrice = mDetails.fare;
@@ -108,19 +111,19 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
         mBookDate.setText(AppHelper.INSTANCE.convertDateFormat(mDetails.dateTime, DD_MM_YY_ZONE, DD_MMM_YY_HH_MM));
         mBookCab.setText(mDetails.cabNumber);
         mBookNoSeat.setText(String.valueOf(mDetails.availableSeats));
-        mBookFrom.setText(mDetails.firstStopName);
-        mBookTo.setText(mDetails.lastStopName);
+        mBookFrom.setText(mDetails.pickup.location);
+        mBookTo.setText(mDetails.drop.location);
 
         if (!mDetails.routeUrl.isEmpty())
             ImageLoader.loadImage(mContext, mBookMap, mDetails.routeUrl,
                     R.drawable.bg_booking, R.drawable.bg_booking);
 
-        mSeat.clear();
+        mBooking.clear();
         for (int i = 0; i < maxSeats; i++) {
-            Seat seat = new Seat();
+            Booking booking = new Booking();
             if (i < maxSeats - mAvailable)
-                seat.available = BOOKED;
-            mSeat.add(seat);
+                booking.available = BOOKED;
+            mBooking.add(booking);
         }
 
         initRecycler();
@@ -150,7 +153,7 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
 
     @Override
     public void select(int aPosition, boolean isChecked) {
-        mSeat.get(aPosition).available = isChecked ? SELECTED : AVAILABLE;
+        mBooking.get(aPosition).available = isChecked ? SELECTED : AVAILABLE;
 //        mAdapter.notifyDataSetChanged();
 
         initTotal(isChecked);
@@ -175,10 +178,7 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.activity_seat_book:
-//                Toast.makeText(mContext, String.valueOf(getTicketCount()), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(mContext, TripDetailActivity.class);
-                intent.putExtra("trip_id", mDetails.tripId);
-                startActivity(intent);
+                bookTicket();
                 break;
             case R.id.header_app_back:
                 onBackPressed();
@@ -186,10 +186,19 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
         }
     }
 
+    private void bookTicket() {
+        if (checkInternet()) {
+            mDetails.routeId = mRouteId;
+            mDetails.totalTickets = getTicketCount();
+            AppDialogs.showProgressDialog(mContext);
+            AppServices.bookTicket(mContext, mDetails);
+        } else AppDialogs.okAction(mContext, getString(R.string.no_internet));
+    }
+
     private int getTicketCount() {
         int count = 0;
-        for (int i = 0; i < mSeat.size(); i++) {
-            if (mSeat.get(i).available == SELECTED)
+        for (int i = 0; i < mBooking.size(); i++) {
+            if (mBooking.get(i).available == SELECTED)
                 count++;
         }
         return count;
@@ -202,8 +211,14 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
             if (response != null) {
                 if (response.requestType == AppServices.API.bookDetails.hashCode()) {
                     if (response.isSuccess()) {
-                        mDetails = ((Seat) response).details;
+                        mDetails = ((Booking) response).details;
                         initDetails(mDetails);
+                    } else AppDialogs.okAction(mContext, response.message);
+                } else if (response.requestType == AppServices.API.bookTicket.hashCode()) {
+                    if (response.isSuccess()) {
+                        Intent intent = new Intent(mContext, ConfirmationActivity.class);
+                        intent.putExtra("booking", new Gson().toJson(response));
+                        startActivity(intent);
                     } else AppDialogs.okAction(mContext, response.message);
                 }
             }
