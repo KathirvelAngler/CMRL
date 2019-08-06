@@ -123,7 +123,6 @@ public class RouteFragment extends BaseFragment implements RouteAdapter.Callback
             }
         }
 
-        mSwipe.setRefreshing(false);
         AppHelper.INSTANCE.showNoData(mView, mRouteData.size() == 0, R.drawable.ic_book_cab, "No Routes Found!");
         mAdapter.notifyDataSetChanged();
     }

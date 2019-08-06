@@ -9,8 +9,9 @@ import com.cmrl.customer.BuildConfig;
 import com.cmrl.customer.http.JsonRestClient;
 import com.cmrl.customer.http.ResponseListener;
 import com.cmrl.customer.http.RestClient;
-import com.cmrl.customer.model.Routes;
 import com.cmrl.customer.model.Booking;
+import com.cmrl.customer.model.History;
+import com.cmrl.customer.model.Routes;
 import com.cmrl.customer.model.Stops;
 import com.cmrl.customer.model.TripDetails;
 
@@ -40,6 +41,7 @@ public class AppServices {
         String bookDetails = "getslot";
         String tripDetails = "tripdetails";
         String bookTicket = "book";
+        String history = "bookingHistory";
 
     }
 
@@ -153,6 +155,19 @@ public class AppServices {
             object.put("routeSlotId", details.routeId);
 
             client.execute((ResponseListener) aContext, object, Booking.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getHistory(Context aContext, int userId) {
+        try {
+            // Generating Req
+            String url = String.format("%s/%s", constructUrl(API.history), userId);
+
+            RestClient client = new RestClient(aContext, Request.Method.POST,
+                    url, API.history.hashCode());
+            client.execute((ResponseListener) aContext, History.class);
         } catch (Exception e) {
             e.printStackTrace();
         }

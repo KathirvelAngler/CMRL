@@ -27,6 +27,7 @@ public interface CMRLConstants {
     String DD_MMM_YY_HH_MM = "dd MMM yyyy hh:mm aa"; // 06 Dec 1993 05:10 PM
     String DD_MMM_yy_HH_MM = "dd MMM yy hh:mm aa"; // 06 Dec 93 05:10 PM
     String DD_MM_YY_ZONE = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"; // 2019-07-29T17:45:08.629+05:30
+    String MMM_DD_EEE = "MMM dd, EEE - hh:mm aa"; // Dec 06,Mon - 05:10  PM
     String HH_MM = "HH:mm"; // 20:30
     String HH_MM_AA = "hh:mm aa"; // 10:30 AM
 
