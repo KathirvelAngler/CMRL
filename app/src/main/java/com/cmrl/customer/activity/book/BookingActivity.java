@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 import static com.cmrl.customer.preference.CMRLConstants.AVAILABLE;
 import static com.cmrl.customer.preference.CMRLConstants.BOOKED;
-import static com.cmrl.customer.preference.CMRLConstants.DD_MMM_YY_HH_MM;
+import static com.cmrl.customer.preference.CMRLConstants.DD_MMM_YY;
 import static com.cmrl.customer.preference.CMRLConstants.DD_MM_YY_ZONE;
 import static com.cmrl.customer.preference.CMRLConstants.IND_RUPEE;
 import static com.cmrl.customer.preference.CMRLConstants.SELECTED;
@@ -45,7 +45,7 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
     int mSpanCount = 8, maxSeats, mAvailable, mRouteId;
     double mPrice = 0, mTotal = 0;
     LinearLayout mFareLayout;
-    TextView mFare, mBookDate, mBookCab, mBookNoSeat, mBookFrom, mBookTo;
+    TextView mFare, mBookDate, mBookTime, mBookCab, mBookNoSeat, mBookFrom, mBookTo;
     Button mBookSeat;
     ImageView mBack, mBookMap;
     Booking mDetails;
@@ -63,6 +63,7 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
         mBack = findViewById(R.id.header_app_back);
 
         mBookDate = findViewById(R.id.activity_book_date);
+        mBookTime = findViewById(R.id.activity_book_time);
         mBookCab = findViewById(R.id.activity_book_cab);
         mBookNoSeat = findViewById(R.id.activity_book_seat);
         mBookFrom = findViewById(R.id.activity_book_from);
@@ -108,7 +109,8 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
         mAvailable = mDetails.availableSeats;
         mPrice = mDetails.fare;
 
-        mBookDate.setText(AppHelper.INSTANCE.convertDateFormat(mDetails.dateTime, DD_MM_YY_ZONE, DD_MMM_YY_HH_MM));
+        mBookDate.setText(AppHelper.INSTANCE.convertDateFormat(mDetails.dateTime, DD_MM_YY_ZONE, DD_MMM_YY));
+        mBookTime.setText(mDetails.scheduleSlot);
         mBookCab.setText(mDetails.cabNumber);
         mBookNoSeat.setText(String.valueOf(mDetails.availableSeats));
         mBookFrom.setText(mDetails.pickup.location);
@@ -165,7 +167,7 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
         else mTotal -= mPrice;
 
         if (mTotal == 0) {
-            mFareLayout.setVisibility(View.GONE);
+            mFareLayout.setVisibility(View.INVISIBLE);
         } else {
             mFareLayout.setVisibility(View.VISIBLE);
             mFare.setText(String.format("%s %s", IND_RUPEE, mTotal));
