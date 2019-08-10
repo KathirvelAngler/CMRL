@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ajithvgiri.searchdialog.OnSearchItemSelected;
 import com.ajithvgiri.searchdialog.SearchListItem;
@@ -52,7 +51,9 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
     ImageView mBack, mCurrentLocation;
     int PLACE_PICKER_REQUEST = 99;
     SwitchMultiButton mSwitch;
-    boolean isDropMetro = true;
+    boolean isDropMetro = true, isCurrentLocation = false;
+    Location mLocation;
+    int mSelectedId = 0;
 
     String[] mPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
     PermissionChecker mChecker;
@@ -79,7 +80,9 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void initDialog(String title, ArrayList<SearchListItem> mData, final TextView view) {
-
+        if (view.getId() == R.id.activity_book_pick_location) {
+            reset(mPickLocation);
+        }
         SearchableDialog searchableDialog = new SearchableDialog(this, mData, title);
         searchableDialog.show();
         searchableDialog.setOnItemSelected(new OnSearchItemSelected() {
@@ -87,6 +90,12 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
             public void onClick(int i, SearchListItem searchListItem) {
                 view.setText(searchListItem.getTitle());
                 view.setTag(searchListItem.getId());
+                mSelectedId = searchListItem.getId();
+                if (view.getId() == R.id.activity_book_pick_location) {
+                    isCurrentLocation = false;
+                    reset(mDropLocation);
+                }
+
             }
         });
     }
@@ -95,6 +104,7 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
     protected void onResume() {
         super.onResume();
         initHeader();
+        resetAll();
     }
 
     @Override
@@ -122,6 +132,7 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
                 reset(mPickLocation);
                 reset(mDropLocation);
                 isDropMetro = position == 0;
+                mSelectedId = 0;
                 if (position == 0)
                     mCurrentLocation.setVisibility(View.VISIBLE);
                 else mCurrentLocation.setVisibility(View.INVISIBLE);
@@ -136,6 +147,12 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
         view.setTag(String.valueOf(-1));
     }
 
+    private void resetAll() {
+        reset(mPickLocation);
+        reset(mDropLocation);
+        mSelectedId = 0;
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -143,17 +160,25 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
                 onBackPressed();
                 break;
             case R.id.activity_book_pick_location:
+                mSelectedId = 0;
                 if (isDropMetro)
                     getStops();
                 else getStations();
                 break;
             case R.id.activity_book_drop_location:
+                if (mPickLocation.getTag().equals("-1")) {
+                    AppDialogs.okAction(mContext, "Pick location should not be empty");
+                    return;
+                }
+
                 if (isDropMetro)
                     getStations();
                 else getStops();
                 break;
             case R.id.activity_book_current_location:
-//                initPlacePicker();
+                AppDialogs.okAction(mContext, "NYI");
+                /*if (mChecker.checkAllPermission(mContext, mPermissions))
+                    initPlacePicker();*/
                 break;
             case R.id.activity_book_search_cab:
                 validate();
@@ -178,7 +203,12 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
             AppDialogs.okAction(mContext, "Pick location should not be empty");
         } else if (mDropLocation.getTag().equals("-1")) {
             AppDialogs.okAction(mContext, "Drop location should not be empty");
-        } else getCurrentLocation();
+        } else {
+            if (isCurrentLocation)
+                searchRoutes(mLocation, true);
+            else getCurrentLocation();
+        }
+
     }
 
     private void getCurrentLocation() {
@@ -187,7 +217,7 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
             public void onSuccess(Location location) {
                 AppDialogs.hideProgressDialog();
                 if (location != null)
-                    searchRoutes(location);
+                    searchRoutes(location, isCurrentLocation);
             }
         }, new OnFailureListener() {
             @Override
@@ -198,11 +228,11 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
         });
     }
 
-    private void searchRoutes(Location location) {
+    private void searchRoutes(Location location, boolean isCurrentLocation) {
         if (checkInternet()) {
             AppDialogs.showProgressDialog(mContext);
             AppServices.searchRoutes(mContext, mPickLocation.getTag().toString(),
-                    mDropLocation.getTag().toString(), location);
+                    mDropLocation.getTag().toString(), location, isCurrentLocation);
         } else AppDialogs.okAction(mContext, getString(R.string.no_internet));
     }
 
@@ -213,7 +243,7 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
     private void getStops() {
         if (checkInternet()) {
             AppDialogs.showProgressDialog(mContext);
-            AppServices.getStops(mContext);
+            AppServices.getStops(mContext, mSelectedId);
         } else AppDialogs.okAction(mContext, getString(R.string.no_internet));
     }
 
@@ -223,7 +253,7 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
     private void getStations() {
         if (checkInternet()) {
             AppDialogs.showProgressDialog(mContext);
-            AppServices.getStations(mContext);
+            AppServices.getStations(mContext, mSelectedId);
         } else AppDialogs.okAction(mContext, getString(R.string.no_internet));
     }
 
@@ -282,8 +312,12 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
             if (resultCode == RESULT_OK) {
                 if (data != null) {
                     Place place = PlacePicker.getPlace(mContext, data);
-                    String toastMsg = String.format("Place: %s", place.getName());
-                    Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                    mPickLocation.setText(place.getName());
+                    mPickLocation.setTag("1");
+                    isCurrentLocation = true;
+                    mLocation = new Location("");
+                    mLocation.setLatitude(place.getLatLng().latitude);
+                    mLocation.setLongitude(place.getLatLng().longitude);
                 } else AppDialogs.okAction(mContext, "Failed to get current location!");
             }
         }

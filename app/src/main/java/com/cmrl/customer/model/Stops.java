@@ -11,7 +11,6 @@ import java.util.ArrayList;
  */
 
 public class Stops extends Response {
-    public int header = 0;
 
     @SerializedName("data")
     public ArrayList<Stops> data = new ArrayList<>();

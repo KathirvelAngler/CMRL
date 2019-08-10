@@ -45,35 +45,46 @@ public class AppServices {
 
     }
 
-    public static void getStops(Context aContext) {
+    public static void getStops(Context aContext, int id) {
         try {
             // Generating Req
+
+            String url = String.format("%s/%s", constructUrl(API.stops), id);
+
             RestClient client = new RestClient(aContext, Request.Method.GET,
-                    constructUrl(API.stops), API.stops.hashCode());
+                    url, API.stops.hashCode());
             client.execute((ResponseListener) aContext, Stops.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void getStations(Context aContext) {
+    public static void getStations(Context aContext, int id) {
         try {
             // Generating Req
+
+            String url = String.format("%s/%s", constructUrl(API.stations), id);
+
             RestClient client = new RestClient(aContext, Request.Method.GET,
-                    constructUrl(API.stations), API.stations.hashCode());
+                    url, API.stations.hashCode());
             client.execute((ResponseListener) aContext, Stops.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void searchRoutes(Context aContext, String pickId, String stopId, Location location) {
+    public static void searchRoutes(Context aContext, String pickId, String stopId,
+                                    Location location, boolean isCurrentLocation) {
         try {
             // Generating Req
             JsonRestClient client = new JsonRestClient(aContext, Request.Method.POST,
                     constructUrl(API.routes), API.routes.hashCode());
             JSONObject object = new JSONObject();
-            object.put("pickupStopId", pickId);
+
+            if (isCurrentLocation)
+                object.put("isCurrentGps", true);
+            else object.put("pickupStopId", pickId);
+
             object.put("dropStopId", stopId);
             object.put("lat", location.getLatitude());
             object.put("lng", location.getLongitude());
