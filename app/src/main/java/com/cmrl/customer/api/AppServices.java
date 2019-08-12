@@ -94,10 +94,10 @@ public class AppServices {
         }
     }
 
-    public static void getRoutes(Context aContext, ResponseListener listener, int id) {
+    public static void getRoutes(Context aContext, ResponseListener listener, int startId, int stopId) {
         try {
             // Generating Req
-            String url = String.format("%s/%s", constructUrl(API.routestop), id);
+            String url = String.format("%s/%s/%s", constructUrl(API.routestop), startId, stopId);
 
             RestClient client = new RestClient(aContext, Request.Method.GET,
                     url, API.routestop.hashCode());
