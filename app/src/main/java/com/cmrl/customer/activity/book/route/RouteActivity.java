@@ -1,8 +1,11 @@
 package com.cmrl.customer.activity.book.route;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -10,11 +13,18 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cmrl.customer.R;
+import com.cmrl.customer.helper.AppDialogs;
+import com.cmrl.customer.helper.AppHelper;
 import com.cmrl.customer.model.Routes;
 import com.cmrl.customer.utils.DepthPageTransformer;
+import com.cmrl.customer.utils.PermissionChecker;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -30,6 +40,10 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
     View mView;
     ViewPager mViewPager;
     Routes mRoutes;
+    LinearLayout mMapNavigation;
+
+    String[] mPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+    PermissionChecker mChecker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +53,18 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
         mView = getWindow().getDecorView().getRootView();
 
         mContext = this;
+        mChecker = new PermissionChecker();
         mBack = findViewById(R.id.header_app_back);
         mViewPager = findViewById(R.id.activity_route_viewpager);
+
+        mMapNavigation = findViewById(R.id.activity_route_map_navigation);
 
         mLeftArrow = findViewById(R.id.activity_route_left_arrow);
         mRightArrow = findViewById(R.id.activity_route_right_arrow);
         mRouteTitle = findViewById(R.id.activity_route_header);
         mDistance = findViewById(R.id.inflate_route_cab_distance);
+
+        mChecker.askAllPermissions(mContext, mPermissions);
 
         initHeader();
 
@@ -136,6 +155,7 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
 
     public boolean clickListener() {
         mBack.setOnClickListener(this);
+        mMapNavigation.setOnClickListener(this);
         mLeftArrow.setOnClickListener(this);
         mRightArrow.setOnClickListener(this);
         return true;
@@ -148,12 +168,41 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
             case R.id.header_app_back:
                 onBackPressed();
                 break;
+            case R.id.activity_route_map_navigation:
+                if (mChecker.checkAllPermission(mContext, mPermissions))
+                    if (mRoutes.pickupLat != null && mRoutes.pickupLng != null)
+                        getCurrentLocation();
+                break;
             case R.id.activity_route_left_arrow:
                 mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
                 break;
             case R.id.activity_route_right_arrow:
                 mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
                 break;
+        }
+    }
+
+    private void getCurrentLocation() {
+        try {
+            AppHelper.INSTANCE.getCurrentLocation(mContext, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    AppDialogs.hideProgressDialog();
+                    if (location != null) {
+                        LatLng start = new LatLng(location.getLatitude(), location.getLongitude());
+                        LatLng end = new LatLng(mRoutes.pickupLat, mRoutes.pickupLng);
+                        AppHelper.INSTANCE.navigateGoogleMap(mContext, start, end);
+                    }
+                }
+            }, new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    AppDialogs.hideProgressDialog();
+                    AppDialogs.okAction(mContext, e.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

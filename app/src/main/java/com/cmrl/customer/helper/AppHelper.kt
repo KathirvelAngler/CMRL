@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
 import android.provider.Settings
@@ -21,6 +22,7 @@ import com.cmrl.customer.R
 import com.cmrl.customer.utils.PermissionChecker
 import com.cmrl.customer.utils.SingleChoiceAdapter
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import java.text.SimpleDateFormat
@@ -165,6 +167,24 @@ object AppHelper {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    fun navigateGoogleMap(context: Context, OrginLatLng: LatLng, DesigLatLng: LatLng) {
+        try {
+            val ai = context.packageManager.getApplicationInfo("com.google.android.apps.maps", 0)
+            val appStatus = ai.enabled
+            if (appStatus) {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(String.format("http://maps.google.com/maps?saddr=%s,%s&daddr=%s,%s"
+                        , OrginLatLng.latitude, OrginLatLng.longitude, DesigLatLng.latitude, DesigLatLng.longitude)))
+                context.startActivity(intent)
+            } else
+                AppDialogs.okAction(context, context.getString(R.string.alert_enable_map))
+        } catch (e: NumberFormatException) {
+            e.printStackTrace()
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
+
     }
 
 }

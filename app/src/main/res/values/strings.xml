@@ -29,4 +29,5 @@
     <string name="track">Track</string>
     <string name="no_internet">No Internet Connection!</string>
     <string name="location_failed">Oops! Location fetching failed!</string>
+    <string name="alert_enable_map">Please ensure that you have installed Google map</string>
 </resources>

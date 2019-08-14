@@ -22,6 +22,12 @@ public class Routes extends Response {
     public int stopId;
     public int pickId;
 
+    @SerializedName("pickupLat")
+    public Double pickupLat;
+
+    @SerializedName("pickupLng")
+    public Double pickupLng;
+
     @SerializedName("duration")
     public String duration = "";
 
