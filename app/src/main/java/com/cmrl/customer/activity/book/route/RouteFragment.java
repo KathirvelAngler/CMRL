@@ -89,7 +89,7 @@ public class RouteFragment extends BaseFragment implements RouteAdapter.Callback
 
     private void loadData() {
         if (checkInternet()) {
-            AppServices.getRoutes(mContext, this, startId, mRoutes.stopId);
+            AppServices.getRoutes(mContext, this, startId, stopId);
         }
     }
 

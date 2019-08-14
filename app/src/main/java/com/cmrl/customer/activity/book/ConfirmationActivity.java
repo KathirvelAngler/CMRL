@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cmrl.customer.R;
+import com.cmrl.customer.activity.dashboard.HomeActivity;
 import com.cmrl.customer.base.BaseActivity;
 import com.cmrl.customer.helper.AppHelper;
 import com.cmrl.customer.http.Response;
@@ -91,7 +92,8 @@ public class ConfirmationActivity extends BaseActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.header_app_back:
-                onBackPressed();
+                finish();
+                startActivity(new Intent(mContext, HomeActivity.class));
                 break;
         }
     }

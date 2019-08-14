@@ -148,7 +148,8 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void resetAll() {
-        reset(mPickLocation);
+        if (!isCurrentLocation)
+            reset(mPickLocation);
         reset(mDropLocation);
         mSelectedId = 0;
     }
@@ -297,6 +298,7 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
                             Intent intent = new Intent(mContext, RouteActivity.class);
                             intent.putExtra("routes", new Gson().toJson(routes));
                             startActivity(intent);
+                            isCurrentLocation = false;
                         } else AppDialogs.okAction(mContext, "No Routes Available!");
                     } else AppDialogs.okAction(mContext, response.message);
                 }
