@@ -41,6 +41,7 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
     ViewPager mViewPager;
     Routes mRoutes;
     LinearLayout mMapNavigation;
+    LatLng mRouteLatLng;
 
     String[] mPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
     PermissionChecker mChecker;
@@ -112,6 +113,7 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
     }
 
     private void initArrow(int i) {
+        mRouteLatLng = new LatLng(mRoutes.data.get(i).pickupLat, mRoutes.data.get(i).pickupLng);
         mRouteTitle.setText(mRoutes.data.get(i).stopName);
         mDistance.setText(mRoutes.data.get(i).duration);
         if (mRoutes.data.get(i).duration.toLowerCase().equals("na"))
@@ -169,9 +171,8 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
                 onBackPressed();
                 break;
             case R.id.activity_route_map_navigation:
-                if (mChecker.checkAllPermission(mContext, mPermissions))
-                    if (mRoutes.pickupLat != null && mRoutes.pickupLng != null)
-                        getCurrentLocation();
+                if (mChecker.checkAllPermission(mContext, mPermissions) && mRouteLatLng != null)
+                    getCurrentLocation();
                 break;
             case R.id.activity_route_left_arrow:
                 mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
@@ -190,7 +191,7 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
                     AppDialogs.hideProgressDialog();
                     if (location != null) {
                         LatLng start = new LatLng(location.getLatitude(), location.getLongitude());
-                        LatLng end = new LatLng(mRoutes.pickupLat, mRoutes.pickupLng);
+                        LatLng end = mRouteLatLng;
                         AppHelper.INSTANCE.navigateGoogleMap(mContext, start, end);
                     }
                 }
