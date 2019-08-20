@@ -177,9 +177,9 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
                 else getStops();
                 break;
             case R.id.activity_book_current_location:
-                AppDialogs.okAction(mContext, "NYI");
-                /*if (mChecker.checkAllPermission(mContext, mPermissions))
-                    initPlacePicker();*/
+//                AppDialogs.okAction(mContext, "NYI");
+                if (mChecker.checkAllPermission(mContext, mPermissions))
+                    initPlacePicker();
                 break;
             case R.id.activity_book_search_cab:
                 validate();
@@ -296,7 +296,7 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
                             routes.pickId = Integer.parseInt(mPickLocation.getTag().toString());
                             routes.stopId = Integer.parseInt(mDropLocation.getTag().toString());
                             Intent intent = new Intent(mContext, RouteActivity.class);
-                            intent.putExtra("routes", new Gson().toJson(routes));
+                            intent.putExtra("routes", routes);
                             startActivity(intent);
                             isCurrentLocation = false;
                         } else AppDialogs.okAction(mContext, "No Routes Available!");

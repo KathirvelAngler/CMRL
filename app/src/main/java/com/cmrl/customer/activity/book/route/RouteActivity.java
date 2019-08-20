@@ -79,11 +79,10 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
         try {
             Intent intent = getIntent();
             if (intent != null) {
-                mRoutes = new Gson().fromJson(intent.getExtras().getString("routes"), Routes.class);
-            }
-
-            initArrow(0);
-            initViewPager();
+                mRoutes = (Routes) intent.getExtras().get("routes");
+                initArrow(0);
+                initViewPager();
+            } else AppDialogs.okAction(mContext, getString(R.string.something));
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
         }
