@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -41,7 +42,7 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         final History detail = mHistory.get(position);
 
         holder.mDate.setText(AppHelper.INSTANCE.convertDateFormat(detail.bookedDateTime,
@@ -63,13 +64,24 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder> 
         } else if (detail.bookingStatus.toLowerCase().equals("completed") ||
                 detail.bookingStatus.toLowerCase().equals("confirmed")) {
             holder.mStatus.setTextColor(mContext.getResources().getColor(R.color.app_green));
-        }
+        } else holder.mStatus.setTextColor(mContext.getResources().getColor(R.color.app_blue));
 
         holder.mMainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (detail.tripId != 0)
                     mCallback.openDetail(position);
+            }
+        });
+
+        if (detail.pickupLat != null && detail.pickupLng != null && !detail.bookingStatus.toLowerCase().equals("new"))
+            holder.mNavigation.setVisibility(View.GONE);
+        else holder.mNavigation.setVisibility(View.VISIBLE);
+
+        holder.mNavigation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.openMap(position);
             }
         });
     }
@@ -83,6 +95,7 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder> 
 
         TextView mDate, mTicket, mFrom, mTo, mFare, mStatus;
         LinearLayout mMainLayout;
+        ImageView mNavigation;
 
         ViewHolder(View aView) {
             super(aView);
@@ -95,10 +108,13 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder> 
             mTo = aView.findViewById(R.id.inflate_ride_to);
             mFare = aView.findViewById(R.id.inflate_ride_fare);
             mStatus = aView.findViewById(R.id.inflate_ride_status);
+            mNavigation = aView.findViewById(R.id.inflate_ride_navigation);
         }
     }
 
     public interface Callback {
         void openDetail(int position);
+
+        void openMap(int position);
     }
 }

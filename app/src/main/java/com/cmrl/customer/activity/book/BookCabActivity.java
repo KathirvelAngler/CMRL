@@ -32,7 +32,6 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -90,7 +89,10 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
             public void onClick(int i, SearchListItem searchListItem) {
                 view.setText(searchListItem.getTitle());
                 view.setTag(searchListItem.getId());
-                mSelectedId = searchListItem.getId();
+
+                if (mSelectedId == 0 && !isCurrentLocation)
+                    mSelectedId = searchListItem.getId();
+
                 if (view.getId() == R.id.activity_book_pick_location) {
                     isCurrentLocation = false;
                     reset(mDropLocation);
@@ -104,7 +106,7 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
     protected void onResume() {
         super.onResume();
         initHeader();
-        resetAll();
+//        resetAll();
     }
 
     @Override
@@ -147,12 +149,12 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
         view.setTag(String.valueOf(-1));
     }
 
-    private void resetAll() {
+    /*private void resetAll() {
         if (!isCurrentLocation)
             reset(mPickLocation);
         reset(mDropLocation);
         mSelectedId = 0;
-    }
+    }*/
 
     @Override
     public void onClick(View v) {
@@ -316,6 +318,7 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
                     Place place = PlacePicker.getPlace(mContext, data);
                     mPickLocation.setText(place.getName());
                     mPickLocation.setTag("1");
+                    reset(mDropLocation);
                     isCurrentLocation = true;
                     mLocation = new Location("");
                     mLocation.setLatitude(place.getLatLng().latitude);

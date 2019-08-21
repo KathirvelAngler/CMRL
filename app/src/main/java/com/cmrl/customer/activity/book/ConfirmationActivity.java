@@ -3,13 +3,13 @@ package com.cmrl.customer.activity.book;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cmrl.customer.R;
-import com.cmrl.customer.activity.dashboard.HomeActivity;
 import com.cmrl.customer.base.BaseActivity;
 import com.cmrl.customer.helper.AppHelper;
 import com.cmrl.customer.http.Response;
@@ -65,6 +65,14 @@ public class ConfirmationActivity extends BaseActivity implements View.OnClickLi
             String date = AppHelper.INSTANCE.convertDateFormat(((Booking) response).details.bookedDate,
                     DD_MM_YY_ZONE, DD_MMM_yy_HH_MM);
             mBookedDate.setText(date);
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    navigateHome();
+                }
+            }, 3000);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -98,8 +106,9 @@ public class ConfirmationActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void navigateHome() {
-        finish();
-        startActivity(new Intent(mContext, HomeActivity.class));
+        Intent intent = new Intent(mContext, RideHistoryActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override

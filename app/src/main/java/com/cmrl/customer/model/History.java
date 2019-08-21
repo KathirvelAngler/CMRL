@@ -33,6 +33,12 @@ public class History extends Response {
     @SerializedName("dropLocation")
     public String dropLocation = "";
 
+    @SerializedName("pickupStopLat")
+    public Double pickupLat;
+
+    @SerializedName("pickupStopLng")
+    public Double pickupLng;
+
     @SerializedName("bookingStatus")
     public String bookingStatus = "";
 

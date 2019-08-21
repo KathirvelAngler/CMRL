@@ -37,6 +37,12 @@ public class Routes extends Response {
     @SerializedName("routeName")
     public String routeName = "";
 
+    @SerializedName("noOfInbetweenStops")
+    public int totalStops;
+
+    @SerializedName("routeStops")
+    public ArrayList<String> routeStops = new ArrayList<>();
+
     @SerializedName("routeUrl")
     public String routeUrl = "";
 
