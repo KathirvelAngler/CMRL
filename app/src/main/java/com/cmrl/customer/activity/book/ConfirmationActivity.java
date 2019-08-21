@@ -92,9 +92,19 @@ public class ConfirmationActivity extends BaseActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.header_app_back:
-                finish();
-                startActivity(new Intent(mContext, HomeActivity.class));
+                navigateHome();
                 break;
         }
+    }
+
+    private void navigateHome() {
+        finish();
+        startActivity(new Intent(mContext, HomeActivity.class));
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        navigateHome();
     }
 }
