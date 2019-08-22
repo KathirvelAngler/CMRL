@@ -83,9 +83,11 @@ public class AppServices {
 
             if (isCurrentLocation)
                 object.put("isCurrentGps", true);
-            else object.put("pickupStopId", pickId);
+            else {
+                object.put("pickupStopId", pickId);
+                object.put("dropStopId", stopId);
+            }
 
-            object.put("dropStopId", stopId);
             object.put("lat", location.getLatitude());
             object.put("lng", location.getLongitude());
             client.execute((ResponseListener) aContext, object, Routes.class);
@@ -116,7 +118,8 @@ public class AppServices {
             JSONObject object = new JSONObject();
             object.put("routeSlotId", routeId);
             object.put("pickUpStopId", pickId);
-            object.put("dropStopId", dropId);
+            if (dropId != 0)
+                object.put("dropStopId", dropId);
             client.execute((ResponseListener) aContext, object, Booking.class);
         } catch (Exception e) {
             e.printStackTrace();

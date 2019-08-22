@@ -25,7 +25,6 @@ import com.cmrl.customer.utils.PermissionChecker;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 /**
@@ -136,7 +135,9 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
 
         @Override
         public Fragment getItem(int position) {
-            return new RouteFragment(mRoutes.pickId, mRoutes.stopId, aRoutes.data.get(position));
+            return new RouteFragment(mRoutes.data.get(position).pickId,
+                    mRoutes.data.get(position).dropId,
+                    aRoutes.data.get(position));
         }
 
         @Override

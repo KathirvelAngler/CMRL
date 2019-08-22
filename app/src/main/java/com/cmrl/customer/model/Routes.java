@@ -19,8 +19,12 @@ public class Routes extends Response {
     public String stopName = "";
 
     @SerializedName("pickupStopId")
-    public int stopId;
     public int pickId;
+
+    @SerializedName("dropStopId")
+    public int dropId;
+
+    public boolean isCurrentLocation = false;
 
     @SerializedName("pickupLat")
     public Double pickupLat;

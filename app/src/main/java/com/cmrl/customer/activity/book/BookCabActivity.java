@@ -295,8 +295,6 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
                     if (response.isSuccess()) {
                         Routes routes = ((Routes) response);
                         if (routes.data.size() > 0) {
-                            routes.pickId = Integer.parseInt(mPickLocation.getTag().toString());
-                            routes.stopId = Integer.parseInt(mDropLocation.getTag().toString());
                             Intent intent = new Intent(mContext, RouteActivity.class);
                             intent.putExtra("routes", routes);
                             startActivity(intent);
@@ -323,6 +321,7 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
                     mLocation = new Location("");
                     mLocation.setLatitude(place.getLatLng().latitude);
                     mLocation.setLongitude(place.getLatLng().longitude);
+                    searchRoutes(mLocation, true);
                 } else AppDialogs.okAction(mContext, "Failed to get current location!");
             }
         }
