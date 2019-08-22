@@ -123,10 +123,8 @@ public class RideHistoryActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.header_app_back:
-                onBackPressed();
-                break;
+        if (v.getId() == R.id.header_app_back) {
+            onBackPressed();
         }
     }
 

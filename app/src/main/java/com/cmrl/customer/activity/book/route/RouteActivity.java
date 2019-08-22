@@ -166,20 +166,16 @@ public class RouteActivity extends FragmentActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.header_app_back:
-                onBackPressed();
-                break;
-            case R.id.activity_route_map_navigation:
-                if (mChecker.checkAllPermission(mContext, mPermissions) && mRouteLatLng != null)
-                    getCurrentLocation();
-                break;
-            case R.id.activity_route_left_arrow:
-                mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
-                break;
-            case R.id.activity_route_right_arrow:
-                mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
-                break;
+        int i = v.getId();
+        if (i == R.id.header_app_back) {
+            onBackPressed();
+        } else if (i == R.id.activity_route_map_navigation) {
+            if (mChecker.checkAllPermission(mContext, mPermissions) && mRouteLatLng != null)
+                getCurrentLocation();
+        } else if (i == R.id.activity_route_left_arrow) {
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
+        } else if (i == R.id.activity_route_right_arrow) {
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
         }
     }
 

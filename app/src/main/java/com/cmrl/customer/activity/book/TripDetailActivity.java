@@ -146,16 +146,11 @@ public class TripDetailActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.header_app_back:
-                onBackPressed();
-                break;
-            case R.id.activity_trip_invoice:
-
-                break;
-            case R.id.activity_trip_support:
-                startActivity(new Intent(mContext, ConfirmationActivity.class));
-                break;
+        int i = v.getId();
+        if (i == R.id.header_app_back) {
+            onBackPressed();
+        } else if (i == R.id.activity_trip_support) {
+            startActivity(new Intent(mContext, ConfirmationActivity.class));
         }
     }
 

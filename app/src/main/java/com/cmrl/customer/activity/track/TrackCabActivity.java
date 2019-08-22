@@ -61,13 +61,11 @@ public class TrackCabActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.header_app_back:
-                onBackPressed();
-                break;
-            case R.id.activity_track_cab:
-                startActivity(new Intent(mContext, TrackMapActivity.class));
-                break;
+        int i = v.getId();
+        if (i == R.id.header_app_back) {
+            onBackPressed();
+        } else if (i == R.id.activity_track_cab) {
+            startActivity(new Intent(mContext, TrackMapActivity.class));
         }
     }
 }

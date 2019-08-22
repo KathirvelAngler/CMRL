@@ -158,34 +158,28 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.header_app_back:
-                onBackPressed();
-                break;
-            case R.id.activity_book_pick_location:
-                mSelectedId = 0;
-                if (isDropMetro)
-                    getStops();
-                else getStations();
-                break;
-            case R.id.activity_book_drop_location:
-                if (mPickLocation.getTag().equals("-1")) {
-                    AppDialogs.okAction(mContext, "Pick location should not be empty");
-                    return;
-                }
+        int i = v.getId();
+        if (i == R.id.header_app_back) {
+            onBackPressed();
+        } else if (i == R.id.activity_book_pick_location) {
+            mSelectedId = 0;
+            if (isDropMetro)
+                getStops();
+            else getStations();
+        } else if (i == R.id.activity_book_drop_location) {
+            if (mPickLocation.getTag().equals("-1")) {
+                AppDialogs.okAction(mContext, "Pick location should not be empty");
+                return;
+            }
 
-                if (isDropMetro)
-                    getStations();
-                else getStops();
-                break;
-            case R.id.activity_book_current_location:
-//                AppDialogs.okAction(mContext, "NYI");
-                if (mChecker.checkAllPermission(mContext, mPermissions))
-                    initPlacePicker();
-                break;
-            case R.id.activity_book_search_cab:
-                validate();
-                break;
+            if (isDropMetro)
+                getStations();
+            else getStops();
+        } else if (i == R.id.activity_book_current_location) {//                AppDialogs.okAction(mContext, "NYI");
+            if (mChecker.checkAllPermission(mContext, mPermissions))
+                initPlacePicker();
+        } else if (i == R.id.activity_book_search_cab) {
+            validate();
         }
 
     }

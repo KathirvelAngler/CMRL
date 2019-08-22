@@ -98,10 +98,8 @@ public class ConfirmationActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.header_app_back:
-                navigateHome();
-                break;
+        if (v.getId() == R.id.header_app_back) {
+            navigateHome();
         }
     }
 

@@ -178,13 +178,11 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.activity_seat_book:
-                bookTicket();
-                break;
-            case R.id.header_app_back:
-                onBackPressed();
-                break;
+        int i = v.getId();
+        if (i == R.id.activity_seat_book) {
+            bookTicket();
+        } else if (i == R.id.header_app_back) {
+            onBackPressed();
         }
     }
 
