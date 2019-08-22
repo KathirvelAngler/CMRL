@@ -83,7 +83,7 @@ public class RideHistoryActivity extends BaseActivity implements View.OnClickLis
         if (checkInternet()) {
             if (isShow)
                 AppDialogs.showProgressDialog(mContext);
-            AppServices.getHistory(mContext, "1231231230");
+            AppServices.getHistory(mContext);
         } else AppDialogs.okAction(mContext, getString(R.string.no_internet));
 
         mAdapter.notifyDataSetChanged();

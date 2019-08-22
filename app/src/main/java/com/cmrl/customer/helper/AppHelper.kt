@@ -18,7 +18,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.auth0.android.jwt.JWT
 import com.cmrl.customer.R
+import com.cmrl.customer.model.User
 import com.cmrl.customer.utils.PermissionChecker
 import com.cmrl.customer.utils.SingleChoiceAdapter
 import com.google.android.gms.location.LocationServices
@@ -185,6 +187,22 @@ object AppHelper {
             e.printStackTrace()
         }
 
+    }
+
+    fun decodeToken(context: Context, token: String): User? {
+        val jwt = JWT(token)
+        val user = User()
+        user.acctNbr = jwt.claims["acctNbr"]!!.asString()
+        user.firstName = jwt.claims["firstName"]!!.asString()
+        user.lastName = jwt.claims["lastName"]!!.asString()
+        user.mobile = jwt.claims["mobile"]!!.asString()
+        user.dob = jwt.claims["dob"]!!.asString()
+        user.gender = jwt.claims["gender"]!!.asString()
+        user.exp = jwt.claims["exp"]!!.asString()
+        user.fullName = String.format("%s %s", user.firstName, user.lastName).trim()
+        user.token = token
+
+        return user
     }
 
 }

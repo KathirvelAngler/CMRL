@@ -14,6 +14,8 @@ import com.cmrl.customer.model.History;
 import com.cmrl.customer.model.Routes;
 import com.cmrl.customer.model.Stops;
 import com.cmrl.customer.model.TripDetails;
+import com.cmrl.customer.model.User;
+import com.cmrl.customer.preference.LocalStorageSP;
 
 import org.json.JSONObject;
 
@@ -132,8 +134,7 @@ public class AppServices {
             JsonRestClient client = new JsonRestClient(aContext, Request.Method.POST,
                     constructUrl(API.tripDetails), API.tripDetails.hashCode());
             JSONObject object = new JSONObject();
-            object.put("customerMobile", "1231231230");
-            // TODO Remove id
+            object.put("customerMobile", LocalStorageSP.INSTANCE.getLoginUser(aContext).mobile);
             object.put("tripId", id != 0 ? id : 1);
             client.execute((ResponseListener) aContext, object, TripDetails.class);
         } catch (Exception e) {
@@ -148,9 +149,12 @@ public class AppServices {
                     constructUrl(API.bookTicket), API.bookTicket.hashCode());
             JSONObject object = new JSONObject();
             object.put("tripId", details.tripId);
-            object.put("customerCardId", "123");
-            object.put("customerMobile", "1231231230");
-            object.put("customerName", "Mathan");
+
+            User user = LocalStorageSP.INSTANCE.getLoginUser(aContext);
+            object.put("customerMobile", user.mobile);
+            object.put("customerName", user.fullName);
+            object.put("customerToken", user.token);
+
             object.put("cabAssigned", details.cabNumber);
             object.put("noOfSeats", details.totalTickets);
             object.put("fare", details.totalTickets * details.fare);
@@ -174,10 +178,11 @@ public class AppServices {
         }
     }
 
-    public static void getHistory(Context aContext, String userMobile) {
+    public static void getHistory(Context aContext) {
         try {
             // Generating Req
-            String url = String.format("%s/%s", constructUrl(API.history), userMobile);
+            String url = String.format("%s/%s", constructUrl(API.history),
+                    LocalStorageSP.INSTANCE.getLoginUser(aContext).mobile);
 
             RestClient client = new RestClient(aContext, Request.Method.POST,
                     url, API.history.hashCode());

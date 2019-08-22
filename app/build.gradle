@@ -1,8 +1,16 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('D:\\Mathan\\Projects\\EO SouthAsia\\Android\\Release Documents\\Key\\eocoimbatore.keystore')
+            storePassword 'angler'
+            keyAlias = 'angler'
+            keyPassword 'angler'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.cmrl.customer"
@@ -16,7 +24,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.debug
+
+            buildConfigField "String", "API_URL", '"http://192.168.0.11:8080"'
+            resValue "string", "MAP_KEY", "AIzaSyD809SXzKBHE2dVmAaxW6uelc-p-N8V6po"
+
+            signingConfig signingConfigs.release
         }
 
         staging  {
@@ -60,6 +72,7 @@ dependencies {
     implementation 'lib.kingja.switchbutton:switchbutton:1.1.8'
     implementation 'com.github.ajithvgiri:search-dialog:v1.1'
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    implementation 'com.auth0.android:jwtdecode:1.2.0'
 
     // Google
     implementation 'com.google.android.gms:play-services:12.0.1'
