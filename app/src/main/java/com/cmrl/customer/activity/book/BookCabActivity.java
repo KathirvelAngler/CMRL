@@ -35,8 +35,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 
-import lib.kingja.switchbutton.SwitchMultiButton;
-
 /**
  * Created by Mathan on 12-07-2019.
  */
@@ -46,10 +44,9 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
     Button mSearchCab;
     Context mContext;
     ArrayList<SearchListItem> mData;
-    TextView mPickLocation, mDropLocation;
+    TextView mPickLocation, mDropLocation, mMetro, mHome;
     ImageView mBack, mCurrentLocation;
     int PLACE_PICKER_REQUEST = 99;
-    SwitchMultiButton mSwitch;
     boolean isDropMetro = true, isCurrentLocation = false;
     Location mLocation;
     int mSelectedId = 0;
@@ -66,7 +63,8 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
         mChecker = new PermissionChecker();
         mBack = findViewById(R.id.header_app_back);
 
-        mSwitch = findViewById(R.id.activity_book_switch);
+        mMetro = findViewById(R.id.activity_book_metro_section);
+        mHome = findViewById(R.id.activity_book_home_section);
 
         mSearchCab = findViewById(R.id.activity_book_search_cab);
         mPickLocation = findViewById(R.id.activity_book_pick_location);
@@ -106,7 +104,6 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
     protected void onResume() {
         super.onResume();
         initHeader();
-//        resetAll();
     }
 
     @Override
@@ -128,18 +125,8 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
         mCurrentLocation.setOnClickListener(this);
         mBack.setOnClickListener(this);
 
-        mSwitch.setOnSwitchListener(new SwitchMultiButton.OnSwitchListener() {
-            @Override
-            public void onSwitch(int position, String tabText) {
-                reset(mPickLocation);
-                reset(mDropLocation);
-                isDropMetro = position == 0;
-                mSelectedId = 0;
-                if (position == 0)
-                    mCurrentLocation.setVisibility(View.VISIBLE);
-                else mCurrentLocation.setVisibility(View.INVISIBLE);
-            }
-        });
+        mHome.setOnClickListener(this);
+        mMetro.setOnClickListener(this);
 
         return true;
     }
@@ -149,12 +136,22 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
         view.setTag(String.valueOf(-1));
     }
 
-    /*private void resetAll() {
-        if (!isCurrentLocation)
-            reset(mPickLocation);
+    private void resetAll(boolean metro) {
+        reset(mPickLocation);
         reset(mDropLocation);
+        isDropMetro = metro;
         mSelectedId = 0;
-    }*/
+
+        if (metro) {
+            mCurrentLocation.setVisibility(View.VISIBLE);
+            mHome.setBackgroundColor(mContext.getResources().getColor(R.color.app_blue));
+            mMetro.setBackgroundColor(mContext.getResources().getColor(R.color.app_light_blue));
+        } else {
+            mCurrentLocation.setVisibility(View.INVISIBLE);
+            mMetro.setBackgroundColor(mContext.getResources().getColor(R.color.app_blue));
+            mHome.setBackgroundColor(mContext.getResources().getColor(R.color.app_light_blue));
+        }
+    }
 
     @Override
     public void onClick(View v) {
@@ -180,6 +177,10 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
                 initPlacePicker();
         } else if (i == R.id.activity_book_search_cab) {
             validate();
+        } else if (i == R.id.activity_book_metro_section) {
+            resetAll(true);
+        } else if (i == R.id.activity_book_home_section) {
+            resetAll(false);
         }
 
     }
@@ -265,8 +266,10 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
                         if (stops.data.size() > 0) {
                             mData = new ArrayList<>();
                             for (int i = 0; i < stops.data.size(); i++) {
-                                SearchListItem data = new SearchListItem(stops.data.get(i).id, stops.data.get(i).stopName);
-                                mData.add(data);
+                                if (stops.data.get(i).stopName != null) {
+                                    SearchListItem data = new SearchListItem(stops.data.get(i).id, stops.data.get(i).stopName);
+                                    mData.add(data);
+                                }
                             }
                             String dialog = String.format("Choose %s Location", isDropMetro ? "Drop" : "Pick");
                             initDialog(dialog, mData, isDropMetro ? mDropLocation : mPickLocation);
@@ -278,8 +281,10 @@ public class BookCabActivity extends BaseActivity implements View.OnClickListene
                         if (stops.data.size() > 0) {
                             mData = new ArrayList<>();
                             for (int i = 0; i < stops.data.size(); i++) {
-                                SearchListItem data = new SearchListItem(stops.data.get(i).id, stops.data.get(i).stopName);
-                                mData.add(data);
+                                if (stops.data.get(i).stopName != null) {
+                                    SearchListItem data = new SearchListItem(stops.data.get(i).id, stops.data.get(i).stopName);
+                                    mData.add(data);
+                                }
                             }
                             String dialog = String.format("Choose %s Location", isDropMetro ? "Pick" : "Drop");
                             initDialog(dialog, mData, isDropMetro ? mPickLocation : mDropLocation);
