@@ -29,7 +29,7 @@ public class AppServices {
      * @param urlKey - API name
      * @return - API url
      */
-    private static String constructUrl(String urlKey) {
+    public static String constructUrl(String urlKey) {
         return String.format("%s/api/v1/%s", BuildConfig.API_URL, urlKey);
     }
 
@@ -43,6 +43,7 @@ public class AppServices {
         String bookDetails = "getslot";
         String tripDetails = "tripdetails";
         String bookTicket = "book";
+        String billDesk = "billdesk/initiate";
         String history = "bookingHistory";
 
     }
@@ -146,7 +147,7 @@ public class AppServices {
         try {
             // Generating Req
             JsonRestClient client = new JsonRestClient(aContext, Request.Method.POST,
-                    constructUrl(API.bookTicket), API.bookTicket.hashCode());
+                    constructUrl(API.billDesk), API.billDesk.hashCode());
             JSONObject object = new JSONObject();
             object.put("tripId", details.tripId);
 
@@ -157,7 +158,7 @@ public class AppServices {
 
             object.put("cabAssigned", details.cabNumber);
             object.put("noOfSeats", details.totalTickets);
-            object.put("fare", details.totalTickets * details.fare);
+            object.put("amount", details.totalTickets * details.fare);
 
             object.put("pickupLat", details.pickup.lat);
             object.put("pickupLng", details.pickup.lng);

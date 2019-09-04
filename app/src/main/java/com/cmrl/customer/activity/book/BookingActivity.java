@@ -190,8 +190,9 @@ public class BookingActivity extends BaseActivity implements BookSeatAdapter.Cal
         if (checkInternet()) {
             mDetails.routeId = mRouteId;
             mDetails.totalTickets = getTicketCount();
-            AppDialogs.showProgressDialog(mContext);
-            AppServices.bookTicket(mContext, mDetails);
+            Intent intent = new Intent(mContext, PaymentActivity.class);
+            intent.putExtra("booking_data", new Gson().toJson(mDetails));
+            startActivity(intent);
         } else AppDialogs.okAction(mContext, getString(R.string.no_internet));
     }
 
